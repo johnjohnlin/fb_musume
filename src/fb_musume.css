@@ -18,7 +18,7 @@
 	width: 100%;
 }
 
-.fbm-top .msg-box {
+.fbm-top .msg-box.show {
 	-webkit-animation: msg-box-pop 0.5s;
 	height: 50px;
 	width: 200px;
