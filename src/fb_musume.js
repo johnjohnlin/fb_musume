@@ -1,3 +1,27 @@
+var Character = function(config) {
+	this.config = config;
+	this.elem = this.createElement();
+	document.querySelector("body").appendChild(this.elem);
+}
+
+Character.prototype.template = [
+	'<div class="fbm-top">',
+		'<img class="character">',
+		'<div class="fbm-bottom">',
+			'<div class="msg-box">',
+				'Hello',
+			'</div>',
+		'</div>',
+	'</div>'
+].join("");
+
+Character.prototype.createElement = function() {
+	var div = document.createElement('div');
+	div.innerHTML = this.template;
+	div.querySelector('.character').src = this.config.path;
+	return div;
+}
+/*
 var Character = {
 	Init: function Init(path) {
 		if (this.initialized_) {
@@ -44,3 +68,7 @@ var Character = {
 };
 
 Character.Init(chrome.extension.getURL("assets/Atago/pannpakapann.jpg"));
+*/
+var character = new Character({
+	path: chrome.extension.getURL("assets/Atago/pannpakapann.jpg")
+});
