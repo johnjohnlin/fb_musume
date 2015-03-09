@@ -1,0 +1,11 @@
+.fbm-character {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width: 250px;
+	height: 250px;
+}
+
+.fbm-character img {
+	width: 100%;
+}
