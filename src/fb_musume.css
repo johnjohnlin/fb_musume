@@ -1,11 +1,36 @@
-.fbm-character {
+.fbm-top {
 	position: fixed;
 	bottom: 0px;
 	left: 0px;
 	width: 250px;
 	height: 250px;
+	padding: 0;
 }
 
-.fbm-character img {
+.fbm-top .character {
+	position: absolute;
 	width: 100%;
+}
+
+.fbm-top .to-bottom {
+	position: absolute;
+	padding-top: 180px;
+	width: 100%;
+}
+
+.fbm-top .msg-box {
+	-webkit-animation: msg-box-pop 0.5s;
+	height: 50px;
+	width: 200px;
+	padding: 5px 15px;
+	margin: 0 auto;
+	border: solid 2px;
+	border-radius: 5px;
+	background: #fff0f8;
+	opacity: 0.8;
+}
+
+@-webkit-keyframes msg-box-pop {
+	from {height: 10px;}
+	to {height: 200px;}
 }
