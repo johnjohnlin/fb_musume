@@ -7,10 +7,8 @@ var Character = function(config) {
 Character.prototype.template = [
 	'<div class="fbm-top">',
 		'<img class="character">',
-		'<div class="fbm-bottom">',
-			'<div class="msg-box">',
-				'Hello',
-			'</div>',
+		'<div class="msg-box">',
+			'Hello',
 		'</div>',
 	'</div>'
 ].join("");
