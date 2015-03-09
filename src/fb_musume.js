@@ -10,4 +10,4 @@ var Character = {
 	}
 };
 
-Character.Init("assets/Atago/pannpakapann.jpg");
+Character.Init(chrome.extension.getURL("assets/Atago/pannpakapann.jpg"));
