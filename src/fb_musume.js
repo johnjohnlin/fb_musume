@@ -55,7 +55,6 @@ Character.prototype.changeAnimation = function(animation_name) {
 	this.current_animation = this.config.animations[this.animation_name];
 	this.current_animation_frame_idx = 0;
 
-	this.next_frame_handle = setTimeout(this.onIdle.bind(this), this);
 	this.nextFrame();
 }
 
