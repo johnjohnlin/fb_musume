@@ -50,6 +50,10 @@ Character.prototype.parseConfig = function(config) {
 			frame.path = chrome.extension.getURL("assets/" + frame.path);
 		});
 	}
+
+	this.config.voice = this.config.voice.map(function(voice_path) {
+		return chrome.extension.getURL("assets/" + voice_path);
+	});
 }
 
 Character.prototype.createElement = function() {
