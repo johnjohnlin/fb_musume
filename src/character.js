@@ -5,15 +5,23 @@ Array.prototype.randomSelect = function() {
 	return this[Math.floor(Math.random()*this.length)];
 }
 
+function msToNextHour() {
+	var now = new Date();
+	// return 5000 + 5000*Math.random();
+	return 3601000 - (now.getMinutes()*60 + now.getSeconds())*1000;
+}
+
+
 /* class definition */
 var Character = function(config) {
 	this.initEventFunctions();
 	this.parseConfig(config);
 	this.elem = this.createElement();
 	document.querySelector("body").appendChild(this.elem);
-	this.hourUpdate();
-	// FIXME: this.say will be called twice each 10s? Why?
-	this.start_owo(true);
+
+	this.updateWord(); // We will periodically update it in onHour
+	this.start_hour();
+	this.start_idle();
 }
 
 /* static data */
@@ -53,45 +61,40 @@ Character.prototype.createElement = function() {
 }
 
 /* members */
-Character.prototype.start_owo = function(runIdle) {
-	if (this.next_tick) {
-		clearTimeout(this.next_tick);
-	}
-	if (runIdle) {
+Character.prototype.start_idle = function(delay) {
+	this.stop_idle()
+	var idle_tick_func = function() {
 		this.onIdle();
-	}
-	var tick_func = function() {
-		this.onIdle();
-		this.next_tick = setTimeout(tick_func, 10000);
+		this.next_idle = setTimeout(idle_tick_func, 10000);
 	}.bind(this);
-	this.next_tick = setTimeout(tick_func, 10000);
-}
-
-Character.prototype.restart_owo = function(runIdle) {
-	this.start_owo(runIdle);
-}
-
-Character.prototype.stop_owo = function(run) {
-	if (this.next_tick) {
-		clearTimeout(this.next_tick);
+	if (delay) {
+		this.next_idle = setTimeout(idle_tick_func, delay);
+	} else {
+		idle_tick_func();
 	}
-	this.next_tick = null;
 }
 
-Character.prototype.say = function(word) {
-	console.log(word);
-	var msgBox = this.elem.querySelector('.msg-box');
-	msgBox.classList.remove('show');
-	// force to reset classList
-	msgBox.offsetHeight = msgBox.offsetHeight;
-	msgBox.innerText = word;
-	msgBox.classList.add('show');
+Character.prototype.stop_idle = function() {
+	if (this.next_idle) {
+		clearTimeout(this.next_idle);
+	}
+	this.next_idle = null;
 }
 
-Character.prototype.changeAnimation = function(animation_name) {
+// I will never stop this loop
+Character.prototype.start_hour = function() {
+	var hour_tick_func = function() {
+		this.onHour()
+		setTimeout(hour_tick_func, msToNextHour());
+	}.bind(this);
+	setTimeout(hour_tick_func, msToNextHour());
+}
+
+Character.prototype.start_animation = function(animation_name) {
 	if (this.animation_name == animation_name) {
 		return;
 	}
+	this.stop_animation();
 	this.animation_name = animation_name;
 
 	var animation = this.config.animations[this.animation_name];
@@ -103,13 +106,29 @@ Character.prototype.changeAnimation = function(animation_name) {
 		character.setAttribute("src", frame.path);
 		frame_idx = (frame_idx + 1) % animation.length;
 		if (frame.duration > 0) {
-			this.animation_next_tick = setTimeout(animation_tick_func, frame.duration);
+			this.next_animation = setTimeout(animation_tick_func, frame.duration);
 		}
 	}.bind(this);
 	animation_tick_func();
 }
 
-Character.prototype.hourUpdate = function() {
+Character.prototype.stop_animation = function() {
+	if (this.next_animation) {
+		clearTimeout(this.next_animation);
+	}
+	this.next_animation = null;
+}
+
+Character.prototype.say = function(word) {
+	var msgBox = this.elem.querySelector('.msg-box');
+	msgBox.classList.remove('show');
+	// force to reset classList
+	msgBox.offsetHeight = msgBox.offsetHeight;
+	msgBox.innerText = word;
+	msgBox.classList.add('show');
+}
+
+Character.prototype.updateWord = function() {
 	this.words = this.config.scripts.idle.words
 		.filter(function(word) {
 			return word.predicate === true || word.predicate();
@@ -120,24 +139,27 @@ Character.prototype.hourUpdate = function() {
 
 /* events */
 Character.prototype.onIdle = function() {
-	//console.log('onIdle', Date.now());
 	var idle_scripts = this.config.scripts.idle;
 	var word = this.words.randomSelect(); // select from the filtered one
-	this.changeAnimation(idle_scripts.animation);
-	// FIXME: this.say will be called twice each 10s? Why?
+	this.start_animation(idle_scripts.animation);
 	this.say(word);
 }
 
 Character.prototype.onClick = function() {
 	var click_scripts = this.config.scripts.click;
 	var word = click_scripts.words.randomSelect();
-	this.changeAnimation(click_scripts.animation);
+	this.start_animation(click_scripts.animation);
 	this.say(word.word);
-	this.restart_owo();
+	this.start_idle(10000);
 }
 
 Character.prototype.onHour = function() {
-	this.hourUpdate();
+	this.updateWord();
+	var hour_scripts = this.config.scripts.hour;
+	var word = hour_scripts.words[(new Date()).getHours()]
+	this.start_animation(hour_scripts.animation);
+	this.say(word.word);
+	this.start_idle(10000);
 }
 
 window.Character = Character;

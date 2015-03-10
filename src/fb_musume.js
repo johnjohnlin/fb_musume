@@ -28,7 +28,7 @@ var character = new Character({
 			]
 		},
 		click: {
-			animation: "idle",
+			animation: "click",
 			words: [
 				{
 					word: "私がお手伝いします。",
@@ -47,9 +47,82 @@ var character = new Character({
 				}
 			]
 		},
-		// not used now
 		hour: {
 			animation: "idle",
+			words: [
+				{
+					word: "00:00",
+				},
+				{
+					word: "01:00",
+				},
+				{
+					word: "02:00",
+				},
+				{
+					word: "03:00",
+				},
+				{
+					word: "04:00"
+				},
+				{
+					word: "05:00",
+				},
+				{
+					word: "06:00",
+				},
+				{
+					word: "07:00",
+				},
+				{
+					word: "08:00",
+				},
+				{
+					word: "09:00"
+				},
+				{
+					word: "10:00",
+				},
+				{
+					word: "11:00",
+				},
+				{
+					word: "12:00",
+				},
+				{
+					word: "13:00",
+				},
+				{
+					word: "14:00"
+				},
+				{
+					word: "15:00",
+				},
+				{
+					word: "16:00",
+				},
+				{
+					word: "17:00",
+				},
+				{
+					word: "18:00",
+				},
+				{
+					word: "19:00"
+				},
+				{
+					word: "20:00",
+				},
+				{
+					word: "21:00",
+				},
+				{
+					word: "22:00",
+				},
+				{
+					word: "23:00",
+				}
+			]
 		}
 	},
 	animations: {
