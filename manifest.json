@@ -8,7 +8,7 @@
 		{
 			"matches":["https://*.facebook.com/*","http://*.facebook.com/*"],
 			"css": ["src/fb_musume.css"],
-			"js": ["src/fb_musume.js"],
+			"js": ["src/character.js", "src/fb_musume.js"],
 			"run_at": "document_end"
 		}
 	],
