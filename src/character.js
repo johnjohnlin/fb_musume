@@ -93,30 +93,20 @@ Character.prototype.changeAnimation = function(animation_name) {
 		return;
 	}
 	this.animation_name = animation_name;
-	this.current_animation = this.config.animations[this.animation_name];
-	this.current_animation_frame_idx = 0;
 
-	this.nextFrame();
-}
-
-Character.prototype.nextFrame = function() {
+	var animation = this.config.animations[this.animation_name];
+	var frame_idx = 0;
 	var character = this.elem.querySelector('.character');
-	var current_frame_path = this.current_animation[this.current_animation_frame_idx].path;
-	var current_frame_duration = this.current_animation[this.current_animation_frame_idx].duration;
-	character.setAttribute("src", current_frame_path);
 
-	// -1 for infinite
-	if (current_frame_duration > 0) {
-		this.next_frame_handle = setTimeout(
-			this.nextFrame.bind(this),
-			current_frame_duration
-		);
-	}
-
-	this.current_animation_frame_idx += 1;
-	if (this.current_animation_frame_idx === this.current_animation.length) {
-		this.current_animation_frame_idx = 0;
-	}
+	var animation_tick_func = function() {
+		var frame = animation[frame_idx];
+		character.setAttribute("src", frame.path);
+		frame_idx = (frame_idx + 1) % animation.length;
+		if (frame.duration > 0) {
+			this.animation_next_tick = setTimeout(animation_tick_func, frame.duration);
+		}
+	}.bind(this);
+	animation_tick_func();
 }
 
 Character.prototype.hourUpdate = function() {
