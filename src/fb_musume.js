@@ -44,12 +44,43 @@ Character.prototype.say = function(word) {
 	msgBox.classList.add('show');
 }
 
-Character.prototype.changeAnimation = function() {
+Character.prototype.changeAnimation = function(animation_name) {
+	if (this.animation_name == animation_name) {
+		return;
+	}
+	this.animation_name = animation_name;
+	this.current_animation = this.config.animations[this.animation_name];
+	this.current_animation_frame_idx = 0;
+
+	this.next_frame_handle = setTimeout(this.onIdle.bind(this), this);
+	this.nextFrame();
+}
+
+Character.prototype.nextFrame = function() {
+	var character = this.elem.querySelector('.character');
+	var current_frame_path = this.current_animation[this.current_animation_frame_idx].path;
+	var current_frame_duration = this.current_animation[this.current_animation_frame_idx].duration;
+	character.setAttribute("src", current_frame_path);
+
+	// -1 for infinite
+	if (current_frame_duration > 0) {
+		this.next_frame_handle = setTimeout(
+			this.nextFrame.bind(this),
+			current_frame_duration
+		);
+	}
+
+	this.current_animation_frame_idx += 1;
+	if (this.current_animation_frame_idx === this.current_animation.length) {
+		this.current_animation_frame_idx = 0;
+	}
 }
 
 Character.prototype.onIdle = function() {
 	var idx = Math.floor(Math.random()*this.words.length);
 	var word = this.words[idx];
+	this.changeAnimation("idle");
+	// FIXME: this.say will be called twice each 10s? Why?
 	this.say(word);
 	this.next_idle_handle = setTimeout(this.onIdle.bind(this), 10000);
 }
@@ -64,7 +95,6 @@ Character.prototype.hourUpdate = function() {
 		}).map(function(word) {
 			return word.word;
 		});
-	console.log(this.words);
 }
 
 Character.prototype.onHour = function() {
@@ -113,19 +143,19 @@ var character = new Character({
 		idle: [
 			{
 				path: "Umi/1.png",
-				time: 2000
+				duration: 5000
 			},
 			{
 				path: "Umi/3.png",
-				time: 300
+				duration: 500
 			},
 			{
 				path: "Umi/2.png",
-				time: 2000
+				duration: 5000
 			},
 			{
 				path: "Umi/3.png",
-				time: 300
+				duration: 500
 			}
 		]
 	}
