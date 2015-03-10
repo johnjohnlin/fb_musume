@@ -1,8 +1,13 @@
+Array.prototype.RandomSelect = function() {
+	return this[Math.floor(Math.random()*this.length)];
+}
+
 var Character = function(config) {
 	this.parseConfig(config);
 	this.elem = this.createElement();
 	document.querySelector("body").appendChild(this.elem);
 	this.hourUpdate();
+	// FIXME: this.say will be called twice each 10s? Why?
 	this.onIdle();
 }
 
@@ -28,14 +33,12 @@ Character.prototype.createElement = function() {
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
 	var character = div.querySelector('.character');
-	character.src = this.config.animations.idle[0].path;
-	// character.addEventListener('click', function(event) {
-	// 	this.say(new Date());
-	// }.bind(this));
+	character.addEventListener('click', this.onClick.bind(this));
 	return div;
 }
 
 Character.prototype.say = function(word) {
+	console.log(word);
 	var msgBox = this.elem.querySelector('.msg-box');
 	msgBox.classList.remove('show');
 	// force to reset classList
@@ -77,15 +80,23 @@ Character.prototype.nextFrame = function() {
 }
 
 Character.prototype.onIdle = function() {
-	var idx = Math.floor(Math.random()*this.words.length);
-	var word = this.words[idx];
-	this.changeAnimation("idle");
+	var idle_scripts = this.config.scripts.idle;
+	var word = this.words.RandomSelect(); // select from the filtered one
+	this.changeAnimation(idle_scripts.animation);
 	// FIXME: this.say will be called twice each 10s? Why?
 	this.say(word);
 	this.next_idle_handle = setTimeout(this.onIdle.bind(this), 10000);
 }
 
 Character.prototype.onClick = function() {
+	var click_scripts = this.config.scripts.click;
+	var word = click_scripts.words.RandomSelect();
+	this.changeAnimation(click_scripts.animation);
+	this.say(word.word);
+
+	clearTimeout(this.next_idle_handle);
+	// FIXME: the controlling is weird, there must be some bugs
+	this.next_idle_handle = setTimeout(this.onIdle.bind(this), 10000);
 }
 
 Character.prototype.hourUpdate = function() {
@@ -130,9 +141,25 @@ var character = new Character({
 				}
 			]
 		},
-		// not used now
 		click: {
 			animation: "idle",
+			words: [
+				{
+					word: "私がお手伝いします。",
+				},
+				{
+					word: "く、くすぐったいです！",
+				},
+				{
+					word: "きゃっ、ど、どうしました？",
+				},
+				{
+					word: "今、呼びました？",
+				},
+				{
+					word: "それ以上やったら怒りますよ？"
+				}
+			]
 		},
 		// not used now
 		hour: {
@@ -156,6 +183,12 @@ var character = new Character({
 			{
 				path: "Umi/3.png",
 				duration: 500
+			}
+		],
+		click: [
+			{
+				path: "Umi/3.png",
+				duration: -1
 			}
 		]
 	}
