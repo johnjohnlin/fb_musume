@@ -86,6 +86,7 @@ Character.prototype.createElement = function() {
 		this.config.voice.forEach(function(voice_path) {
 			var audio = document.createElement('audio');
 			audio.src = voice_path;
+			audio.dataset.fbm = true;
 			voice_set.appendChild(audio);
 		});
 	}
@@ -97,13 +98,31 @@ Character.prototype.createElement = function() {
 }
 
 Character.prototype.createBodyObserver = function() {
+	var bind_func = function(audio) {
+		if (audio.dataset.fbm) {
+			return;
+		}
+		audio.dataset.fbm = true;
+		audio.addEventListener('loadedmetadata', function() {
+			console.log('loadedmetadata', arguments);
+		});
+	}
+	// query one first
+	Array.prototype.forEach.call(document.querySelectorAll('audio'), bind_func);
 	// TODO: maybe move to member
 	return new MutationObserver(function(mutations) {
-		var audio_mutations = mutations.filter(function(mutation) {
-			return mutation.target.nodeName.toLowerCase() === 'audio';
-		});
+		var audio_tags = mutations.reduce(function(last, mutation) {
+			var nodes = Array.prototype.filter.call(mutation.addedNodes, function(node) {
+				return node.nodeName.toLowerCase() === 'audio';
+			});
+			return last.concat(nodes);
+		}, []);
+		if (audio_tags.length === 0) {
+			return;
+		}
 		// TODO: hack fb notification music
-		console.log(audio_mutations);
+		console.log('find audio', audio_tags);
+		audio_tags.forEach(bind_func);
 	});
 }
 
@@ -117,7 +136,7 @@ Character.prototype.start_idle = function(delay, idle_count) {
 	var idle_tick_func = function() {
 		this.onIdle();
 		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
-		console.log(next_delay);
+		//console.log(next_delay);
 		next_delay = 10000;
 		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
