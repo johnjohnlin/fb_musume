@@ -13,13 +13,21 @@ function msToNextHour() {
 
 
 /* class definition */
-var Character = function(config) {
+var Character = function(config, refresh_time_s, enable_voice) {
+	// Store configs
 	this.initEventFunctions();
+	this.enable_voice = enable_voice;
+	this.refresh_time_ms = refresh_time_s*1000;
 	this.parseConfig(config);
+
+	// Initialize objects
 	this.elem = this.createElement();
-	this.idle_count = 0;
 	document.querySelector("body").appendChild(this.elem);
 
+	// Class variables
+	this.idle_count = 0;
+
+	// Start loop
 	this.updateWord(); // We will periodically update it in onHour
 	this.start_hour();
 	this.start_idle();
@@ -65,12 +73,14 @@ Character.prototype.createElement = function() {
 	div.innerHTML = this.template;
 
 	// Create voice DOMs
-	var voice_set = div.querySelector('.voice-set');
-	this.config.voice.forEach(function(voice_path) {
-		var audio = document.createElement('audio');
-		audio.src = voice_path;
-		voice_set.appendChild(audio);
-	});
+	if (this.enable_voice) {
+		var voice_set = div.querySelector('.voice-set');
+		this.config.voice.forEach(function(voice_path) {
+			var audio = document.createElement('audio');
+			audio.src = voice_path;
+			voice_set.appendChild(audio);
+		});
+	}
 
 	// Register events
 	var character = div.querySelector('.character');
@@ -83,7 +93,7 @@ Character.prototype.start_idle = function(delay) {
 	this.stop_idle()
 	var idle_tick_func = function() {
 		this.onIdle();
-		this.next_idle = setTimeout(idle_tick_func, 10000+5000*this.idle_count);
+		this.next_idle = setTimeout(idle_tick_func, this.refresh_time_ms*(1+0.5*this.idle_count));
 	}.bind(this);
 	if (delay) {
 		this.next_idle = setTimeout(idle_tick_func, delay);
@@ -145,7 +155,7 @@ Character.prototype.say = function(word, voice_id) {
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
 
-	if (typeof voice_id !== 'undefined') {
+	if (this.enable_voice && typeof voice_id !== 'undefined') {
 		var voice_set = this.elem.querySelectorAll('.voice-set audio');
 		if (typeof this.current_voice_id !== 'undefined') {
 			// The condition is false only at the first time
@@ -179,7 +189,7 @@ Character.prototype.onClick = function() {
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(10000);
+	this.start_idle(this.refresh_time_ms);
 	this.idle_count = 0;
 }
 
@@ -189,7 +199,7 @@ Character.prototype.onHour = function() {
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(10000);
+	this.start_idle(this.refresh_time_ms);
 }
 
 window.Character = Character;

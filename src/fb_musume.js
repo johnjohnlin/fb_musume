@@ -1,4 +1,5 @@
-var character = new Character({
+var characters = {
+"0": {
 	scripts: {
 		// Idle scripts
 		idle: {
@@ -102,4 +103,18 @@ var character = new Character({
 		"Umi/2.mp3",
 		"Umi/3.mp3"
 	]
-});
+}
+}
+
+function initCharacter(items) {
+	if (items.character !== "none") {
+		var character_config = characters[items.character];
+		window.character = new Character(character_config, items.refresh_time, items.enable_voice);
+	}
+}
+
+chrome.storage.sync.get({
+	enable_voice: true,
+	refresh_time: 30,
+	character: "none"
+}, initCharacter);
