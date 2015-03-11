@@ -17,6 +17,7 @@ var Character = function(config) {
 	this.initEventFunctions();
 	this.parseConfig(config);
 	this.elem = this.createElement();
+	this.idle_count = 0;
 	document.querySelector("body").appendChild(this.elem);
 
 	this.updateWord(); // We will periodically update it in onHour
@@ -82,7 +83,7 @@ Character.prototype.start_idle = function(delay) {
 	this.stop_idle()
 	var idle_tick_func = function() {
 		this.onIdle();
-		this.next_idle = setTimeout(idle_tick_func, 10000);
+		this.next_idle = setTimeout(idle_tick_func, 10000+5000*this.idle_count);
 	}.bind(this);
 	if (delay) {
 		this.next_idle = setTimeout(idle_tick_func, delay);
@@ -170,6 +171,7 @@ Character.prototype.onIdle = function() {
 	var word = this.words.randomSelect(); // select from the filtered one
 	this.start_animation(idle_scripts.animation);
 	this.say(word.word, word.voice);
+	this.idle_count += 1;
 }
 
 Character.prototype.onClick = function() {
@@ -178,6 +180,7 @@ Character.prototype.onClick = function() {
 	this.start_animation(click_scripts.animation);
 	this.say(word.word, word.voice);
 	this.start_idle(10000);
+	this.idle_count = 0;
 }
 
 Character.prototype.onHour = function() {
