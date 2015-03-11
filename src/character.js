@@ -13,12 +13,11 @@ function msToNextHour() {
 
 
 /* class definition */
-var Character = function(config, refresh_time_s, enable_voice) {
+var Character = function(character_config, user_config) {
 	// Store configs
 	this.initEventFunctions();
-	this.enable_voice = enable_voice;
-	this.refresh_time_ms = refresh_time_s*1000;
-	this.parseConfig(config);
+	this.parseConfig(character_config); // NOTE: store in this.config for cleaner code
+	this.parseUserConfig(user_config);
 
 	// Initialize objects
 	this.elem = this.createElement();
@@ -66,13 +65,18 @@ Character.prototype.parseConfig = function(config) {
 	});
 }
 
+Character.prototype.parseUserConfig = function(user_config) {
+	this.user_config = user_config;
+	this.user_config.refresh_time_ms = this.user_config.refresh_time*1000;
+}
+
 Character.prototype.createElement = function() {
 	// Create DOMs
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
 
 	// Create voice DOMs
-	if (this.enable_voice) {
+	if (this.user_config.enable_voice) {
 		var voice_set = div.querySelector('.voice-set');
 		this.config.voice.forEach(function(voice_path) {
 			var audio = document.createElement('audio');
@@ -93,7 +97,7 @@ Character.prototype.start_idle = function(delay) {
 	var idle_count = 0;
 	var idle_tick_func = function() {
 		this.onIdle();
-		var next_delay = this.refresh_time_ms*(1 + 0.5 * idle_count++);
+		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * idle_count++);
 		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
@@ -156,7 +160,7 @@ Character.prototype.say = function(word, voice_id) {
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
 
-	if (this.enable_voice && typeof voice_id !== 'undefined') {
+	if (this.user_config.enable_voice && typeof voice_id !== 'undefined') {
 		var voice_set = this.elem.querySelectorAll('.voice-set audio');
 		if (typeof this.current_voice_id !== 'undefined') {
 			// The condition is false only at the first time
@@ -189,7 +193,7 @@ Character.prototype.onClick = function() {
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.refresh_time_ms);
+	this.start_idle(this.user_config.refresh_time_ms);
 }
 
 Character.prototype.onHour = function() {
@@ -198,7 +202,7 @@ Character.prototype.onHour = function() {
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.refresh_time_ms);
+	this.start_idle(this.user_config.refresh_time_ms);
 }
 
 window.Character = Character;

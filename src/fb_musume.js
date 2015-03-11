@@ -106,10 +106,10 @@ var characters = {
 }
 }
 
-function initCharacter(items) {
-	if (items.character !== "none") {
-		var character_config = characters[items.character];
-		window.character = new Character(character_config, items.refresh_time, items.enable_voice);
+function initCharacter(user_config) {
+	if (user_config.character !== "none") {
+		var character_config = characters[user_config.character];
+		window.character = new Character(character_config, user_config);
 	}
 }
 
