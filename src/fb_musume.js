@@ -98,8 +98,8 @@ var character = new Character({
 		]
 	},
 	voice: [
-		"Umi/1.png",
-		"Umi/2.png",
-		"Umi/3.png"
+		"Umi/1.mp3",
+		"Umi/2.mp3",
+		"Umi/3.mp3"
 	]
 });

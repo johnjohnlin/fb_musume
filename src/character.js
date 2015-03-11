@@ -31,6 +31,8 @@ Character.prototype.template = [
 		'<div class="msg-box">',
 			'Hello',
 		'</div>',
+		'<div class="voice-set">',
+		'</div>',
 	'</div>'
 ].join("");
 
@@ -57,8 +59,19 @@ Character.prototype.parseConfig = function(config) {
 }
 
 Character.prototype.createElement = function() {
+	// Create DOMs
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
+
+	// Create voice DOMs
+	var voice_set = div.querySelector('.voice-set');
+	this.config.voice.forEach(function(voice_path) {
+		var audio = document.createElement('audio');
+		audio.src = voice_path;
+		voice_set.appendChild(audio);
+	});
+
+	// Register events
 	var character = div.querySelector('.character');
 	character.addEventListener('click', this.onClick);
 	return div;
@@ -107,7 +120,7 @@ Character.prototype.start_animation = function(animation_name) {
 
 	var animation_tick_func = function() {
 		var frame = animation[frame_idx];
-		character.setAttribute("src", frame.path);
+		character.src = frame.path;
 		frame_idx = (frame_idx + 1) % animation.length;
 		if (frame.duration > 0) {
 			this.next_animation = setTimeout(animation_tick_func, frame.duration);
@@ -123,21 +136,31 @@ Character.prototype.stop_animation = function() {
 	this.next_animation = null;
 }
 
-Character.prototype.say = function(word) {
+Character.prototype.say = function(word, voice_id) {
 	var msgBox = this.elem.querySelector('.msg-box');
 	msgBox.classList.remove('show');
 	// force to reset classList
 	msgBox.offsetHeight = msgBox.offsetHeight;
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
+
+	if (typeof voice_id !== 'undefined') {
+		var voice_set = this.elem.querySelectorAll('.voice-set audio');
+		if (typeof this.current_voice_id !== 'undefined') {
+			// The condition is false only at the first time
+			// Can we modify it?
+			voice_set[this.current_voice_id].pause();
+		}
+		voice_set[voice_id].currentTime = 0;
+		voice_set[voice_id].play();
+		this.current_voice_id = voice_id;
+	}
 }
 
 Character.prototype.updateWord = function() {
 	this.words = this.config.scripts.idle.words
 		.filter(function(word) {
 			return word.predicate === true || word.predicate();
-		}).map(function(word) {
-			return word.word;
 		});
 }
 
@@ -146,14 +169,14 @@ Character.prototype.onIdle = function() {
 	var idle_scripts = this.config.scripts.idle;
 	var word = this.words.randomSelect(); // select from the filtered one
 	this.start_animation(idle_scripts.animation);
-	this.say(word);
+	this.say(word.word, word.voice);
 }
 
 Character.prototype.onClick = function() {
 	var click_scripts = this.config.scripts.click;
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
-	this.say(word.word);
+	this.say(word.word, word.voice);
 	this.start_idle(10000);
 }
 
@@ -162,7 +185,7 @@ Character.prototype.onHour = function() {
 	var hour_scripts = this.config.scripts.hour;
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
-	this.say(word.word);
+	this.say(word.word, word.voice);
 	this.start_idle(10000);
 }
 
