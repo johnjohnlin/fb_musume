@@ -25,7 +25,6 @@ var Character = function(config, refresh_time_s, enable_voice) {
 	document.querySelector("body").appendChild(this.elem);
 
 	// Class variables
-	this.idle_count = 0;
 
 	// Start loop
 	this.updateWord(); // We will periodically update it in onHour
@@ -91,9 +90,11 @@ Character.prototype.createElement = function() {
 /* members */
 Character.prototype.start_idle = function(delay) {
 	this.stop_idle()
+	var idle_count = 0;
 	var idle_tick_func = function() {
 		this.onIdle();
-		this.next_idle = setTimeout(idle_tick_func, this.refresh_time_ms*(1+0.5*this.idle_count));
+		var next_delay = this.refresh_time_ms*(1 + 0.5 * idle_count++);
+		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
 		this.next_idle = setTimeout(idle_tick_func, delay);
@@ -181,7 +182,6 @@ Character.prototype.onIdle = function() {
 	var word = this.words.randomSelect(); // select from the filtered one
 	this.start_animation(idle_scripts.animation);
 	this.say(word.word, word.voice);
-	this.idle_count += 1;
 }
 
 Character.prototype.onClick = function() {
@@ -190,7 +190,6 @@ Character.prototype.onClick = function() {
 	this.start_animation(click_scripts.animation);
 	this.say(word.word, word.voice);
 	this.start_idle(this.refresh_time_ms);
-	this.idle_count = 0;
 }
 
 Character.prototype.onHour = function() {
