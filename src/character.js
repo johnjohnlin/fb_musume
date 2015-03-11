@@ -160,16 +160,14 @@ Character.prototype.say = function(word, voice_id) {
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
 
-	if (this.user_config.enable_voice && typeof voice_id !== 'undefined') {
+	if (this.user_config.enable_voice && voice_id !== undefined) {
 		var voice_set = this.elem.querySelectorAll('.voice-set audio');
-		if (typeof this.current_voice_id !== 'undefined') {
-			// The condition is false only at the first time
-			// Can we modify it?
-			voice_set[this.current_voice_id].pause();
+		if (this.current_voice) {
+			this.current_voice.pause();
 		}
-		voice_set[voice_id].currentTime = 0;
-		voice_set[voice_id].play();
-		this.current_voice_id = voice_id;
+		this.current_voice = voice_set[voice_id];
+		this.current_voice.currentTime = 0;
+		this.current_voice.play(); 
 	}
 }
 
