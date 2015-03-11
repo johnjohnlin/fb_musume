@@ -22,6 +22,10 @@ var Character = function(character_config, user_config) {
 	// Initialize objects
 	this.elem = this.createElement();
 	document.querySelector("body").appendChild(this.elem);
+	this.body_observer = this.createBodyObserver();
+	this.body_observer.observe(document.querySelector("body"), {
+		childList: true, subtree: true
+	});
 
 	// Class variables
 
@@ -89,6 +93,17 @@ Character.prototype.createElement = function() {
 	var character = div.querySelector('.character');
 	character.addEventListener('click', this.onClick);
 	return div;
+}
+
+Character.prototype.createBodyObserver = function() {
+	// TODO: maybe move to member
+	return new MutationObserver(function(mutations) {
+		var audio_mutations = mutations.filter(function(mutation) {
+			return mutation.target.nodeName.toLowerCase() === 'audio';
+		});
+		// TODO: hack fb notification music
+		console.log(audio_mutations);
+	});
 }
 
 /* members */
