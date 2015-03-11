@@ -28,6 +28,7 @@ var Character = function(character_config, user_config) {
 	});
 
 	// Class variables
+	this.idle_count = 0;
 
 	// Start loop
 	this.updateWord(); // We will periodically update it in onHour
@@ -107,12 +108,17 @@ Character.prototype.createBodyObserver = function() {
 }
 
 /* members */
-Character.prototype.start_idle = function(delay) {
-	this.stop_idle()
-	var idle_count = 0;
+Character.prototype.start_idle = function(delay, idle_count) {
+	this.stop_idle();
+	if (!idle_count) {
+		idle_count = 0;
+	}
+	this.idle_count = idle_count;
 	var idle_tick_func = function() {
 		this.onIdle();
-		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * idle_count++);
+		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
+		console.log(next_delay);
+		next_delay = 10000;
 		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
@@ -215,7 +221,7 @@ Character.prototype.onHour = function() {
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.user_config.refresh_time_ms);
+	this.start_idle(this.user_config.refresh_time_ms, this.idle_count);
 }
 
 window.Character = Character;
