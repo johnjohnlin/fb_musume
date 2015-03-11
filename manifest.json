@@ -12,8 +12,9 @@
 			"run_at": "document_end"
 		}
 	],
+	"options_page": "src/settings.html",
 	"web_accessible_resources": [
 		"assets/*"
 	],
-	"permissions": ["tabs"]
+	"permissions": ["tabs", "storage"]
 }
