@@ -122,27 +122,19 @@ function onFacebookAudioPlay(event) {
 }
 
 function createBodyObserver() {
-	var bind_func = function(audio) {
-		if (audio.dataset.fbm) {
+	var bind_func = function(tag) {
+		if (tag.nodeName !== 'AUDIO' || tag.dataset.fbm) {
 			return;
 		}
-		audio.dataset.fbm = true;
-		audio.addEventListener('play', onFacebookAudioPlay);
+		tag.dataset.fbm = true;
+		tag.addEventListener('play', onFacebookAudioPlay);
 	}
 	// query one first
 	Array.prototype.forEach.call(document.querySelectorAll('audio'), bind_func);
 	return new MutationObserver(function(mutations) {
-		var audio_tags = mutations.reduce(function(last, mutation) {
-			var nodes = Array.prototype.filter.call(mutation.addedNodes, function(node) {
-				return node.nodeName.toLowerCase() === 'audio';
-			});
-			return last.concat(nodes);
-		}, []);
-		if (audio_tags.length === 0) {
-			return;
-		}
-		console.log('find audio', audio_tags);
-		audio_tags.forEach(bind_func);
+		mutations.forEach(function(mutation) {
+			Array.prototype.forEach.call(mutation.addedNodes, bind_func);
+		});
 	});
 }
 
