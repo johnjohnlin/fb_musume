@@ -90,8 +90,8 @@ Character.prototype.createElement = function() {
 	// Register events
 	var character = div.querySelector('.character');
 	character.addEventListener('click', this.onClick);
-	character.addEventListener('message', this.onMessage);
-	character.addEventListener('club_notify', this.onClubNotify);
+	div.addEventListener('message', this.onMessage);
+	div.addEventListener('club_notify', this.onClubNotify);
 	return div;
 }
 
@@ -180,7 +180,7 @@ Character.prototype.say = function(word, voice_id) {
 		}
 		this.current_voice = voice_set[voice_id];
 		this.current_voice.currentTime = 0;
-		this.current_voice.play(); 
+		this.current_voice.play();
 	}
 }
 
