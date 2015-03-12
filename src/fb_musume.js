@@ -114,7 +114,7 @@ function onFacebookAudioPlay(event) {
 	if (!character) {
 		return;
 	}
-	var audio = this;
+	var audio = event.target;
 	audio.pause();
 	if (audio.src === "https://fbstatic-a.akamaihd.net/rsrc.php/yy/r/odIeERVR1c5.mp3") {
 		// club
@@ -130,7 +130,6 @@ function createBodyObserver() {
 		if (tag.nodeName !== 'AUDIO' && tag.parentElement.nodeName != "BODY" || tag.dataset.fbm) {
 			return;
 		}
-		// audio.muted = true;
 		tag.dataset.fbm = true;
 		tag.addEventListener('play', onFacebookAudioPlay);
 	}
