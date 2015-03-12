@@ -101,12 +101,11 @@ Character.prototype.trigger = function(event_name, detail) {
 	this.elem.dispatchEvent(event);
 }
 
-Character.prototype.start_idle = function(delay, idle_count) {
+Character.prototype.start_idle = function(delay, reset_idle_count) {
 	this.stop_idle();
-	if (!idle_count) {
-		idle_count = 0;
+	if (reset_idle_count) {
+		this.idle_count = 0;
 	}
-	this.idle_count = idle_count;
 	var idle_tick_func = function() {
 		this.onIdle();
 		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
@@ -214,7 +213,7 @@ Character.prototype.onHour = function() {
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.user_config.refresh_time_ms, this.idle_count);
+	this.start_idle(this.user_config.refresh_time_ms, true);
 }
 
 Character.prototype.onMessage = function(event) {
