@@ -13,12 +13,20 @@ function msToNextHour() {
 
 
 /* class definition */
-var Character = function(config) {
+var Character = function(character_config, user_config) {
+	// Store configs
 	this.initEventFunctions();
-	this.parseConfig(config);
+	this.parseConfig(character_config); // NOTE: store in this.config for cleaner code
+	this.parseUserConfig(user_config);
+
+	// Initialize DOM objects
 	this.elem = this.createElement();
 	document.querySelector("body").appendChild(this.elem);
 
+	// Class variables
+	this.idle_count = 0;
+
+	// Start loop
 	this.updateWord(); // We will periodically update it in onHour
 	this.start_hour();
 	this.start_idle();
@@ -30,6 +38,8 @@ Character.prototype.template = [
 		'<img class="character">',
 		'<div class="msg-box">',
 			'Hello',
+		'</div>',
+		'<div class="voice-set">',
 		'</div>',
 	'</div>'
 ].join("");
@@ -50,22 +60,56 @@ Character.prototype.parseConfig = function(config) {
 			frame.path = chrome.extension.getURL("assets/" + frame.path);
 		});
 	}
+
+	this.config.voice = this.config.voice.map(function(voice_path) {
+		return chrome.extension.getURL("assets/" + voice_path);
+	});
+}
+
+Character.prototype.parseUserConfig = function(user_config) {
+	this.user_config = user_config;
+	this.user_config.refresh_time_ms = this.user_config.refresh_time*1000;
 }
 
 Character.prototype.createElement = function() {
+	// Create DOMs
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
+
+	// Create voice DOMs
+	if (this.user_config.enable_voice) {
+		var voice_set = div.querySelector('.voice-set');
+		this.config.voice.forEach(function(voice_path) {
+			var audio = document.createElement('audio');
+			audio.src = voice_path;
+			audio.dataset.fbm = true;
+			voice_set.appendChild(audio);
+		});
+	}
+
+	// Register events
 	var character = div.querySelector('.character');
 	character.addEventListener('click', this.onClick);
+	div.addEventListener('message', this.onMessage);
+	div.addEventListener('club_notify', this.onClubNotify);
 	return div;
 }
 
 /* members */
-Character.prototype.start_idle = function(delay) {
-	this.stop_idle()
+Character.prototype.trigger = function(event_name, detail) {
+	var event = new CustomEvent(event_name, true, true, {detail: detail});
+	this.elem.dispatchEvent(event);
+}
+
+Character.prototype.start_idle = function(delay, reset_idle_count) {
+	this.stop_idle();
+	if (reset_idle_count) {
+		this.idle_count = 0;
+	}
 	var idle_tick_func = function() {
 		this.onIdle();
-		this.next_idle = setTimeout(idle_tick_func, 10000);
+		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
+		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
 		this.next_idle = setTimeout(idle_tick_func, delay);
@@ -103,7 +147,7 @@ Character.prototype.start_animation = function(animation_name) {
 
 	var animation_tick_func = function() {
 		var frame = animation[frame_idx];
-		character.setAttribute("src", frame.path);
+		character.src = frame.path;
 		frame_idx = (frame_idx + 1) % animation.length;
 		if (frame.duration > 0) {
 			this.next_animation = setTimeout(animation_tick_func, frame.duration);
@@ -119,21 +163,29 @@ Character.prototype.stop_animation = function() {
 	this.next_animation = null;
 }
 
-Character.prototype.say = function(word) {
+Character.prototype.say = function(word, voice_id) {
 	var msgBox = this.elem.querySelector('.msg-box');
 	msgBox.classList.remove('show');
 	// force to reset classList
 	msgBox.offsetHeight = msgBox.offsetHeight;
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
+
+	if (this.user_config.enable_voice && voice_id !== undefined) {
+		var voice_set = this.elem.querySelectorAll('.voice-set audio');
+		if (this.current_voice) {
+			this.current_voice.pause();
+		}
+		this.current_voice = voice_set[voice_id];
+		this.current_voice.currentTime = 0;
+		this.current_voice.play();
+	}
 }
 
 Character.prototype.updateWord = function() {
 	this.words = this.config.scripts.idle.words
 		.filter(function(word) {
 			return word.predicate === true || word.predicate();
-		}).map(function(word) {
-			return word.word;
 		});
 }
 
@@ -142,15 +194,15 @@ Character.prototype.onIdle = function() {
 	var idle_scripts = this.config.scripts.idle;
 	var word = this.words.randomSelect(); // select from the filtered one
 	this.start_animation(idle_scripts.animation);
-	this.say(word);
+	this.say(word.word, word.voice);
 }
 
 Character.prototype.onClick = function() {
 	var click_scripts = this.config.scripts.click;
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
-	this.say(word.word);
-	this.start_idle(10000);
+	this.say(word.word, word.voice);
+	this.start_idle(this.user_config.refresh_time_ms, true);
 }
 
 Character.prototype.onHour = function() {
@@ -158,8 +210,20 @@ Character.prototype.onHour = function() {
 	var hour_scripts = this.config.scripts.hour;
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
-	this.say(word.word);
-	this.start_idle(10000);
+	this.say(word.word, word.voice);
+	this.start_idle(this.user_config.refresh_time_ms);
+}
+
+Character.prototype.onMessage = function(event) {
+	var fb_message_scripts = this.config.scripts.fb_message;
+	var word = fb_message_scripts.words.randomSelect();
+	this.start_animation(fb_message_scripts.animation);
+	this.say(word.word, word.voice);
+	this.start_idle(this.user_config.refresh_time_ms);
+}
+
+Character.prototype.onClubNotify = function(event) {
+	this.onMessage();
 }
 
 window.Character = Character;
