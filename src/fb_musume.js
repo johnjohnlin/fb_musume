@@ -114,11 +114,15 @@ function onFacebookAudioPlay(event) {
 	if (!character) {
 		return;
 	}
-	/* TODO:
-		1. pause
-		2. take src of audio to determine which event type
-		3. character.trigger('message', blah);
-	*/
+	var audio = this;
+	audio.pause();
+	if (audio.src === "https://fbstatic-a.akamaihd.net/rsrc.php/yy/r/odIeERVR1c5.mp3") {
+		// club
+		character.trigger('ClubNotify');
+	} else {
+		// I assume all of the other messages are msg
+		character.trigger("Message");
+	}
 }
 
 function createBodyObserver() {
@@ -126,11 +130,12 @@ function createBodyObserver() {
 		if (audio.dataset.fbm) {
 			return;
 		}
+		// audio.muted = true;
 		audio.dataset.fbm = true;
 		audio.addEventListener('play', onFacebookAudioPlay);
 	}
 	// query one first
-	Array.prototype.forEach.call(document.querySelectorAll('audio'), bind_func);
+	Array.prototype.forEach.call(document.querySelectorAll('body>audio'), bind_func);
 	return new MutationObserver(function(mutations) {
 		var audio_tags = mutations.reduce(function(last, mutation) {
 			var nodes = Array.prototype.filter.call(mutation.addedNodes, function(node) {
