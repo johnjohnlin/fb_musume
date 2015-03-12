@@ -217,11 +217,11 @@ Character.prototype.onHour = function() {
 }
 
 Character.prototype.onMessage = function(event) {
-	console.log('onMessage', event);
+	this.onClick();
 }
 
 Character.prototype.onClubNotify = function(event) {
-	console.log('onClubNotify', event);
+	this.onClick();
 }
 
 window.Character = Character;

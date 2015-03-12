@@ -118,16 +118,16 @@ function onFacebookAudioPlay(event) {
 	audio.pause();
 	if (audio.src === "https://fbstatic-a.akamaihd.net/rsrc.php/yy/r/odIeERVR1c5.mp3") {
 		// club
-		character.trigger('ClubNotify');
+		character.trigger('club_notify');
 	} else {
 		// I assume all of the other messages are msg
-		character.trigger("Message");
+		character.trigger("message");
 	}
 }
 
 function createBodyObserver() {
 	var bind_func = function(tag) {
-		if (tag.nodeName !== 'AUDIO' && tag.parentElement.nodeName != "BODY" || tag.dataset.fbm) {
+		if (tag.nodeName !== 'AUDIO' || tag.parentElement.nodeName !== "BODY" || tag.dataset.fbm) {
 			return;
 		}
 		tag.dataset.fbm = true;
