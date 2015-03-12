@@ -34,6 +34,7 @@ var characters = {
 				}
 			]
 		},
+		// Click scripts
 		click: {
 			animation: "click",
 			words: [
@@ -44,6 +45,7 @@ var characters = {
 				{ word: "それ以上やったら怒りますよ？", voice: 2 }
 			]
 		},
+		// Hour alarm scripts
 		hour: {
 			animation: "idle",
 			words: [
@@ -72,7 +74,15 @@ var characters = {
 				{ word: "22:00", voice: 1 },
 				{ word: "23:00", voice: 2 }
 			]
-		}
+		},
+		// FB message scripts
+		fb_message: {
+			animation: "atago",
+			words: [
+				{ word: "メッセージデース", voice: 3 },
+				{ word: "Message!"        , voice: 3 }
+			]
+		},
 	},
 	animations: {
 		idle: [
@@ -98,12 +108,19 @@ var characters = {
 				path: "Umi/3.png",
 				duration: -1
 			}
+		],
+		atago: [
+			{
+				path: "Atago/pannpakapann.jpg",
+				duration: -1
+			}
 		]
 	},
 	voice: [
 		"Umi/1.mp3",
 		"Umi/2.mp3",
-		"Umi/3.mp3"
+		"Umi/3.mp3",
+		"Atago/nc88878.mp3"
 	]
 }
 }

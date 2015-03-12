@@ -109,7 +109,6 @@ Character.prototype.start_idle = function(delay, reset_idle_count) {
 	var idle_tick_func = function() {
 		this.onIdle();
 		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
-		//console.log(next_delay);
 		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
@@ -216,11 +215,15 @@ Character.prototype.onHour = function() {
 }
 
 Character.prototype.onMessage = function(event) {
-	this.onClick();
+	var fb_message_scripts = this.config.scripts.fb_message;
+	var word = fb_message_scripts.words.randomSelect();
+	this.start_animation(fb_message_scripts.animation);
+	this.say(word.word, word.voice);
+	this.start_idle(this.user_config.refresh_time_ms);
 }
 
 Character.prototype.onClubNotify = function(event) {
-	this.onClick();
+	this.onMessage();
 }
 
 window.Character = Character;
