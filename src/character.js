@@ -110,7 +110,6 @@ Character.prototype.start_idle = function(delay, reset_idle_count) {
 		this.onIdle();
 		var next_delay = this.user_config.refresh_time_ms*(1 + 0.5 * this.idle_count++);
 		//console.log(next_delay);
-		next_delay = 10000;
 		this.next_idle = setTimeout(idle_tick_func, next_delay);
 	}.bind(this);
 	if (delay) {
@@ -204,7 +203,7 @@ Character.prototype.onClick = function() {
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.user_config.refresh_time_ms);
+	this.start_idle(this.user_config.refresh_time_ms, true);
 }
 
 Character.prototype.onHour = function() {
@@ -213,7 +212,7 @@ Character.prototype.onHour = function() {
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
-	this.start_idle(this.user_config.refresh_time_ms, true);
+	this.start_idle(this.user_config.refresh_time_ms);
 }
 
 Character.prototype.onMessage = function(event) {
