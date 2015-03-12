@@ -1,3 +1,5 @@
+(function() {
+
 var characters = {
 "0": {
 	scripts: {
@@ -106,15 +108,58 @@ var characters = {
 }
 }
 
-function initCharacter(user_config) {
-	if (user_config.character !== "none") {
-		var character_config = characters[user_config.character];
-		window.character = new Character(character_config, user_config);
+var character = null;
+
+function onFacebookAudioPlay(event) {
+	if (!character) {
+		return;
 	}
+	/* TODO:
+		1. pause
+		2. take src of audio to determine which event type
+		3. character.trigger('message', blah);
+	*/
+}
+
+function createBodyObserver() {
+	var bind_func = function(audio) {
+		if (audio.dataset.fbm) {
+			return;
+		}
+		audio.dataset.fbm = true;
+		audio.addEventListener('play', onFacebookAudioPlay);
+	}
+	// query one first
+	Array.prototype.forEach.call(document.querySelectorAll('audio'), bind_func);
+	return new MutationObserver(function(mutations) {
+		var audio_tags = mutations.reduce(function(last, mutation) {
+			var nodes = Array.prototype.filter.call(mutation.addedNodes, function(node) {
+				return node.nodeName.toLowerCase() === 'audio';
+			});
+			return last.concat(nodes);
+		}, []);
+		if (audio_tags.length === 0) {
+			return;
+		}
+		console.log('find audio', audio_tags);
+		audio_tags.forEach(bind_func);
+	});
 }
 
 chrome.storage.sync.get({
 	enable_voice: true,
 	refresh_time: 30,
 	character: "none"
-}, initCharacter);
+}, function(user_config) {
+	if (user_config.character === "none") {
+		return;
+	}
+	var character_config = characters[user_config.character];
+	character = new Character(character_config, user_config);
+	var body_observer = createBodyObserver();
+	body_observer.observe(document.querySelector("body"), {
+		childList: true, subtree: true
+	});
+});
+
+})();

@@ -19,13 +19,9 @@ var Character = function(character_config, user_config) {
 	this.parseConfig(character_config); // NOTE: store in this.config for cleaner code
 	this.parseUserConfig(user_config);
 
-	// Initialize objects
+	// Initialize DOM objects
 	this.elem = this.createElement();
 	document.querySelector("body").appendChild(this.elem);
-	this.body_observer = this.createBodyObserver();
-	this.body_observer.observe(document.querySelector("body"), {
-		childList: true, subtree: true
-	});
 
 	// Class variables
 	this.idle_count = 0;
@@ -94,39 +90,17 @@ Character.prototype.createElement = function() {
 	// Register events
 	var character = div.querySelector('.character');
 	character.addEventListener('click', this.onClick);
+	character.addEventListener('message', this.onMessage);
+	character.addEventListener('club_notify', this.onClubNotify);
 	return div;
 }
 
-Character.prototype.createBodyObserver = function() {
-	var bind_func = function(audio) {
-		if (audio.dataset.fbm) {
-			return;
-		}
-		audio.dataset.fbm = true;
-		audio.addEventListener('loadedmetadata', function() {
-			console.log('loadedmetadata', arguments);
-		});
-	}
-	// query one first
-	Array.prototype.forEach.call(document.querySelectorAll('audio'), bind_func);
-	// TODO: maybe move to member
-	return new MutationObserver(function(mutations) {
-		var audio_tags = mutations.reduce(function(last, mutation) {
-			var nodes = Array.prototype.filter.call(mutation.addedNodes, function(node) {
-				return node.nodeName.toLowerCase() === 'audio';
-			});
-			return last.concat(nodes);
-		}, []);
-		if (audio_tags.length === 0) {
-			return;
-		}
-		// TODO: hack fb notification music
-		console.log('find audio', audio_tags);
-		audio_tags.forEach(bind_func);
-	});
+/* members */
+Character.prototype.trigger = function(event_name, detail) {
+	var event = new CustomEvent(event_name, true, true, {detail: detail});
+	this.elem.dispatchEvent(event);
 }
 
-/* members */
 Character.prototype.start_idle = function(delay, idle_count) {
 	this.stop_idle();
 	if (!idle_count) {
@@ -241,6 +215,14 @@ Character.prototype.onHour = function() {
 	this.start_animation(hour_scripts.animation);
 	this.say(word.word, word.voice);
 	this.start_idle(this.user_config.refresh_time_ms, this.idle_count);
+}
+
+Character.prototype.onMessage = function(event) {
+	console.log('onMessage', event);
+}
+
+Character.prototype.onClubNotify = function(event) {
+	console.log('onClubNotify', event);
 }
 
 window.Character = Character;
