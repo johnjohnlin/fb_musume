@@ -22,7 +22,7 @@ voice 1 - many voice path (list)
 */
 
 var characters = {
-	0: {
+	kao: {
 		name: "本澤かお",
 		scripts: {
 			// Idle scripts

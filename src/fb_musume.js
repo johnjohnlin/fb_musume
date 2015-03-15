@@ -37,7 +37,8 @@ function createBodyObserver() {
 chrome.storage.sync.get({
 	enable_voice: true,
 	refresh_time: 30,
-	character: "none"
+	character: Object.keys(characters)[0],
+	language: "jp"
 }, function(user_config) {
 	if (user_config.character === "none") {
 		return;
