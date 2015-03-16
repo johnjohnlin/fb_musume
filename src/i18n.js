@@ -50,7 +50,7 @@ I18n.prototype.t = function(key, params) {
 		"";
 	if (params) {
 		Object.keys(params).forEach(function(key) {
-			string.replace(new RegExp('{' + key + '}/g'), params[key]);
+			string = string.replace(new RegExp('\\{' + key + '\\}', 'g'), params[key]);
 		});
 	}
 	return string;
