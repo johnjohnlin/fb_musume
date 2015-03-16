@@ -34,12 +34,20 @@ function createBodyObserver() {
 	});
 }
 
-chrome.storage.sync.get({
-	enable_voice: true,
-	refresh_time: 30,
-	character: Object.keys(characters)[0],
-	language: "jp"
-}, function(user_config) {
+var setting_promise = new Promise(function(resolve, reject) {
+	chrome.storage.sync.get({
+		enable_voice: true,
+		refresh_time: 30,
+		character: Object.keys(characters)[0],
+		language: "ja_JP"
+	}, function(user_config) { resovle(user_config); });
+}).then(function(settings) {
+	return new Promise(function(reject, resolve) {
+		I18n.init({
+			locale: user_config.language
+		}, function() { resolve(user_config); });
+	});
+}).then(function(user_config) {
 	if (user_config.character === "none") {
 		return;
 	}
