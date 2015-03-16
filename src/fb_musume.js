@@ -42,7 +42,7 @@ var setting_promise = new Promise(function(resolve, reject) {
 		language: "ja_JP"
 	}, function(user_config) { resolve(user_config); });
 }).then(function(user_config) {
-	return new Promise(function(reject, resolve) {
+	return new Promise(function(resolve, reject) {
 		I18n.init({
 			locale: user_config.language
 		}, function() { resolve(user_config); });
