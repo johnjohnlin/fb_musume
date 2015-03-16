@@ -45,7 +45,9 @@ var setting_promise = new Promise(function(resolve, reject) {
 	return new Promise(function(resolve, reject) {
 		I18n.init({
 			locale: user_config.language
-		}, function() { resolve(user_config); });
+		},
+		"messages.json",
+		function() { resolve(user_config); });
 	});
 }).then(function(user_config) {
 	if (user_config.character === "none") {

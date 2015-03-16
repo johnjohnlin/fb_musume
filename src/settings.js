@@ -33,7 +33,6 @@ function initCharacters()
 
 	addOption("none", "None");
 	for (var key in characters) {
-		console.log(key);
 		addOption(key, characters[key].name);
 	}
 
@@ -52,6 +51,21 @@ function load()
 		document.getElementById('refresh_time').value = items.refresh_time;
 		document.getElementById('character').value = items.character;
 		document.getElementById('language').value = items.language;
+		// TODO use Promise?
+		I18n.init(
+			{locale: items.language},
+			"settings.json",
+			function() {
+				var i18n_obj = this;
+				Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
+					if (dom.dataset.stringParam) {
+						dom.innerText = i18n_obj.t(dom.dataset.string, JSON.parse(dom.dataset.stringParam));
+					} else {
+						dom.innerText = i18n_obj.t(dom.dataset.string);
+					}
+				});
+			}
+		);
 	});
 }
 

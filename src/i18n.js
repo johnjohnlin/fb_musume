@@ -1,6 +1,7 @@
 (function() {
 
-var I18n = function(settings, callback) {
+var I18n = function(settings, translate_file, callback) {
+	this.translate_file = translate_file;
 	if (settings.defaultLocale) {
 		this.defaultLocale = settings.defaultLocale;
 	}
@@ -12,8 +13,8 @@ var I18n = function(settings, callback) {
 	this.loadStrings(this.locale, callback);
 };
 
-I18n.init = function(settings, callback) {
-	window.i18n = new I18n(settings, callback);
+I18n.init = function(settings, translate_file, callback) {
+	window.i18n = new I18n(settings, translate_file, callback);
 }
 
 
@@ -28,7 +29,7 @@ I18n.prototype.loadStrings = function(locale, callback) {
 		return;
 	}
 	var path = chrome.extension.getURL(
-		[this.localePath, locale, "/messages.json"].join(''));
+		[this.localePath, locale, "/", this.translate_file].join(''));
 	var xhr = new XMLHttpRequest();
 	xhr.addEventListener('load', function(event) {
 		this.onStringsLoad(event, locale);
