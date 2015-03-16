@@ -40,8 +40,8 @@ var setting_promise = new Promise(function(resolve, reject) {
 		refresh_time: 30,
 		character: Object.keys(characters)[0],
 		language: "ja_JP"
-	}, function(user_config) { resovle(user_config); });
-}).then(function(settings) {
+	}, function(user_config) { resolve(user_config); });
+}).then(function(user_config) {
 	return new Promise(function(reject, resolve) {
 		I18n.init({
 			locale: user_config.language

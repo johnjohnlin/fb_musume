@@ -19,7 +19,7 @@ I18n.init = function(settings, callback) {
 
 I18n.prototype.defaultLocale = "en_US";
 I18n.prototype.locale = "en_US";
-I18n.prototype.localePath = 'locales';
+I18n.prototype.localePath = 'src/locales/';
 
 I18n.prototype.loadStrings = function(locale, callback) {
 	callback = callback || function(){};
@@ -28,7 +28,7 @@ I18n.prototype.loadStrings = function(locale, callback) {
 		return;
 	}
 	var path = chrome.extension.getURL(
-		[this.localePath, "/", locale, "messages.json"].join());
+		[this.localePath, locale, "/messages.json"].join(''));
 	var xhr = new XMLHttpRequest();
 	xhr.addEventListener('load', function(event) {
 		this.onStringsLoad(event, locale);
