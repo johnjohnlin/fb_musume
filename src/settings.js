@@ -1,5 +1,12 @@
 (function () {
 
+function set(items) {
+	document.getElementById('enable_voice').checked = items.enable_voice;
+	document.getElementById('refresh_time').value = items.refresh_time;
+	document.getElementById('character').value = items.character;
+	document.getElementById('language').value = items.language;
+}
+
 function save()
 {
 	var enable_voice = document.getElementById('enable_voice').checked;
@@ -25,53 +32,72 @@ function initCharacters()
 {
 	var keys = Object.keys(characters);
 	var select = document.getElementById('character');
-	var addOption = function(value, innerText) {
+
+	var addOption = function(value, string, filename) {
 		var option = document.createElement("option");
 		option.setAttribute("value", value);
-		option.innerText = innerText;
+		option.dataset.string = string;
+		option.dataset.stringFile = filename || '';
 		select.appendChild(option);
 		return option;
 	};
 
-	addOption("none", "").dataset.string = "none";
+	addOption("none", "none");
 	for (var key in characters) {
-		addOption(key, characters[key].name);
+		addOption(key, characters[key].name, 'messages');
 	}
+}
 
+function initDOMi18n()
+{
+	Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
+		var key = dom.dataset.string;
+		var param = (dom.dataset.stringParam)? JSON.parse(dom.dataset.stringParam): null;
+		var filename = dom.dataset.stringFile || null;
+		dom.innerText = i18n.t(key, param, filename);
+	});
+}
+
+function changeLanguage(event)
+{
+	new Promise(function(resolve, reject) {
+		I18n.init({
+			locale: event.target.value,
+			defaultFilename: 'settings'
+		}, resolve);
+	}).then(function() {
+		initDOMi18n();
+	}).catch(function(e) { console.error(e.stack); });
 }
 
 function load()
 {
-	initCharacters();
-	// TODO use Promise?
-	chrome.storage.sync.get({
-		enable_voice: true,
-		refresh_time: 30,
-		character: Object.keys(characters)[0],
-		language: "jp"
-	}, function(items) {
-		document.getElementById('enable_voice').checked = items.enable_voice;
-		document.getElementById('refresh_time').value = items.refresh_time;
-		document.getElementById('character').value = items.character;
-		document.getElementById('language').value = items.language;
-		I18n.init(
-			{locale: items.language},
-			"settings.json",
-			function() {
-				Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
-					if (dom.dataset.stringParam) {
-						dom.innerText = i18n.t(dom.dataset.string, JSON.parse(dom.dataset.stringParam));
-					} else {
-						dom.innerText = i18n.t(dom.dataset.string);
-					}
-				});
-			}
-		);
-	});
+	new Promise(function(resolve, reject) {
+		chrome.storage.sync.get({
+			enable_voice: true,
+			refresh_time: 30,
+			character: Object.keys(characters)[0],
+			language: "jp"
+		}, function(items) { resolve(items); });
+	}).then(function(items) {
+		return new Promise(function(resolve, reject) {
+			I18n.init({
+				locale: items.language,
+				defaultFilename: 'settings'
+			}, function() { resolve(items); });
+		});
+	}).then(function(items) {
+		initCharacters();
+		initDOMi18n();
+		set(items);
+	}).catch(function(e) { console.error(e.stack) });
 }
 
-document.addEventListener('DOMContentLoaded', load);
-document.getElementById('save').addEventListener('click', save);
+document.addEventListener('DOMContentLoaded', function() {
+	load();
+	document.getElementById('save').addEventListener('click', save);
+	document.getElementById('language').addEventListener('change', changeLanguage);
+});
 
 })();
 

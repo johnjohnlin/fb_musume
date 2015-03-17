@@ -64,7 +64,6 @@ var setting_promise = new Promise(function(resolve, reject) {
 		I18n.init({
 			locale: user_config.language
 		},
-		"messages.json",
 		function() { resolve(user_config); });
 	});
 }).then(function(user_config) {
@@ -78,6 +77,6 @@ var setting_promise = new Promise(function(resolve, reject) {
 	body_observer.observe(document.querySelector("body"), {
 		childList: true, subtree: true
 	});
-});
+}).catch(function(e) { console.error(e.stack); });
 
 })();
