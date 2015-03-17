@@ -50,6 +50,7 @@ function initCharacters()
 
 function initDOMi18n()
 {
+	// Change DOM language when i18n object is prepared
 	Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
 		var key = dom.dataset.string;
 		var param = (dom.dataset.stringParam)? JSON.parse(dom.dataset.stringParam): null;

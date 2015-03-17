@@ -1,0 +1,42 @@
+{
+	"title": {
+		"en_US": "Facebook Girl Project Setting page",
+		"zh_TW": "Facebook 娘計畫",
+		"ja_JP": "フェスブック娘プロジェクト"
+	},
+	"none": {
+		"en_US": "None",
+		"zh_TW": "無"
+	},
+	"character": {
+		"en_US": "Character",
+		"zh_TW": "角色",
+		"ja_JP": "キャラクタ"
+	},
+	"language": {
+		"en_US": "Language",
+		"zh_TW": "語言"
+	},
+	"voice": {
+		"en_US": "Voice",
+		"zh_TW": "聲音"
+	},
+	"enable": {
+		"en_US": "Enable",
+		"zh_TW": "開啟",
+		"ja_JP": "有効にする"
+	},
+	"refresh": {
+		"en_US": "Script refresh time:",
+		"zh_TW": "台詞更新時間："
+	},
+	"refresh_unit": {
+		"en_US": "s",
+		"zh_TW": "秒"
+	},
+	"save": {
+		"en_US": "Save",
+		"zh_TW": "儲存",
+		"ja_JP": "設定を保存"
+	}
+}
