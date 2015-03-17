@@ -77,7 +77,7 @@ function load()
 			enable_voice: true,
 			refresh_time: 30,
 			character: Object.keys(characters)[0],
-			language: "jp"
+			language: "ja_JP"
 		}, function(items) { resolve(items); });
 	}).then(function(items) {
 		return new Promise(function(resolve, reject) {
