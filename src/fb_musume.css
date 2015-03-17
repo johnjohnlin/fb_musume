@@ -32,6 +32,11 @@
 	-webkit-animation-fill-mode: forwards;
 }
 
+/* Facebook notification */
+._50d1 {
+	bottom: 280px;
+}
+
 @-webkit-keyframes msg-box-show {
 	0% {
 		width: 0px;

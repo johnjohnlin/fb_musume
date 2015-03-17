@@ -57,7 +57,7 @@ var characters = {
 						predicate: true
 					},
 					{
-						word: "char0_msg_click_017",
+						word: "char0_msg_idle_017",
 						voice: 0,
 						predicate: function() {var weekday = (new Date()).getDay();return weekday === 0 || weekday === 6;}
 					},
