@@ -23,7 +23,7 @@ voice 1 - many voice path (list)
 
 var characters = {
 	kao: {
-		name: "本澤かお",
+		name: "char0_name",
 		scripts: {
 			// Idle scripts
 			idle: {
@@ -31,85 +31,85 @@ var characters = {
 				words: [
 					/* Disabled because Feit does not agree
 					{
-						word: "ふーーー本を読み過ぎる、ちょっとねって。",
+						word: "char0_msg_idle_000",
 						voice: 1,
 						predicate: true
 					},
 					{
-						word: "今度の本は面白いです、あなたも読んでみませんか？",
+						word: "char0_msg_idle_001",
 						voice: 2,
 						predicate: true
 					},
 					*/
 					{
-						word: "いつも一人でほんをよむから、友達があまりいません。",
+						word: "char0_msg_idle_002",
 						voice: 0,
 						predicate: true
 					},
 					{
-						word: "あなたがここにいると、なんだかさびしくなくなりますね。",
+						word: "char0_msg_idle_003",
 						voice: 1,
 						predicate: true
 					},
 					{
-						word: "おすすめの本って？あの...、この「Ruby on Rails チュートリアル」はどう思います？",
+						word: "char0_msg_idle_004",
 						voice: 2,
 						predicate: true
 					},
 					{
-						word: "週末か...どこかへ遊びに行くつもりですか？",
+						word: "char0_msg_click_017",
 						voice: 0,
 						predicate: function() {var weekday = (new Date()).getDay();return weekday === 0 || weekday === 6;}
 					},
 					{
-						word: "夜が静かなので、わたし、好き",
+						word: "char0_msg_idle_005",
 						voice: 1,
 						predicate: function() {return (new Date()).getHours() >= 18;}
 					},
 					{
-						word: "かふんしょうのせいで、図書館で本を読もう！",
+						word: "char0_msg_idle_006",
 						voice: 2,
 						predicate: function() {var month = (new Date()).getMonth(); return 3 <= month && month <= 5;}
 					},
 					{
-						word: "外が暑いから、本屋で本を読もう！",
+						word: "char0_msg_idle_007",
 						voice: 1,
 						predicate: function() {var month = (new Date()).getMonth(); return 6 <= month && month <= 8;}
 					},
 					{
-						word: "読書の秋なので、一緒に新しい本を買いましょう！",
+						word: "char0_msg_idle_008",
 						voice: 0,
 						predicate: function() {var month = (new Date()).getMonth(); return 9 <= month;}
 					},
 					{
-						word: "さむいから、家で本を読もう！",
+						word: "char0_msg_idle_009",
 						voice: 2,
 						predicate: function() {var month = (new Date()).getMonth(); return month <= 2;}
 					},
 					/* Disabled because Feit does not agree
 					{
-						word: "エープリルフールか...まいとしの今日のたびに、私が馬鹿にされた，ウウッ。",
+						word: "char0_msg_idle_013",
 						voice: 2,
 						predicate: function() {var now = new Date(); return now.getDate() === 1 && now.getMonth() === 3;}
 					},
 					{
-						word: "明るい月のヒカリ、そのふうを大好きです",
+						word: "char0_msg_idle_014",
 						voice: 1,
 						predicate: function() {var now = new Date(); return now.getDate() === 15 && now.getMonth() === 7;}
 					},
 					{
-						word: "今日のパーティーで、「Go Programming」の本のプレセントをよういしたのに、みんなが微妙な顔をしました。おかしいです。",
+						word: "char0_msg_idle_016",
 						voice: 1,
 						predicate: function() {var now = new Date(); return now.getDate() === 25 && now.getMonth() === 11;}
 					},
 					*/
 					{
-						word: "バレンタインデーに、恋人とフェイスブックを読んで、特別な気分に浸れて私は好きです",
+						word: "char0_msg_idle_012",
 						voice: 2,
 						predicate: function() {var now = new Date(); return now.getDate() === 14 && now.getMonth() === 1;}
 					},
 					{
-						word: "ハロウィンのセリフって、あの...、フェス or ブックですか？",
+						word: "char0_msg_idle_015",
 						voice: 0,
 						predicate: function() {var now = new Date(); return now.getDate() === 31 && now.getMonth() === 9;}
 					}
@@ -119,57 +119,57 @@ var characters = {
 			click: {
 				animation: "click",
 				words: [
-					{ word: "どこを触るつもりです？"                        , voice: 0 },
-					{ word: "（ビクリした）"                                , voice: 1 },
-					{ word: "イイーッ！"                                    , voice: 2 },
-					{ word: "メガネが壊れるから、やめてよ。"                , voice: 0 },
-					{ word: "そこはちょっと..."                             , voice: 1 },
-					{ word: "本を読んでいる最中だから、少しだけ待ちなさい。", voice: 2 }
+					{ word: "char0_msg_click_000", voice: 0 },
+					{ word: "char0_msg_click_001", voice: 1 },
+					{ word: "char0_msg_click_002", voice: 2 },
+					{ word: "char0_msg_click_003", voice: 0 },
+					{ word: "char0_msg_click_004", voice: 1 },
+					{ word: "char0_msg_click_005", voice: 2 }
 				]
 			},
 			// Hour alarm scripts
 			hour: {
 				animation: "idle",
 				words: [
-					{ word: "(00:00)", voice: 0 },
-					{ word: "(01:00)", voice: 1 },
-					{ word: "(02:00)", voice: 2 },
-					{ word: "(03:00)", voice: 0 },
-					{ word: "(04:00)", voice: 1 },
-					{ word: "(05:00)", voice: 2 },
-					{ word: "(06:00)", voice: 0 },
-					{ word: "(07:00)", voice: 1 },
-					{ word: "(08:00)", voice: 2 },
-					{ word: "(09:00)", voice: 0 },
-					{ word: "(10:00)", voice: 1 },
-					{ word: "(11:00)", voice: 2 },
-					{ word: "(12:00)", voice: 0 },
-					{ word: "(13:00)", voice: 1 },
-					{ word: "(14:00)", voice: 2 },
-					{ word: "(15:00)", voice: 0 },
-					{ word: "(16:00)", voice: 1 },
-					{ word: "(17:00)", voice: 2 },
-					{ word: "(18:00)", voice: 0 },
-					{ word: "(19:00)", voice: 1 },
-					{ word: "(20:00)", voice: 2 },
-					{ word: "(21:00)", voice: 0 },
-					{ word: "(22:00)", voice: 1 },
-					{ word: "(23:00)", voice: 2 }
+					{ word: "char0_msg_hour_00", voice: 0 },
+					{ word: "char0_msg_hour_01", voice: 1 },
+					{ word: "char0_msg_hour_02", voice: 2 },
+					{ word: "char0_msg_hour_03", voice: 0 },
+					{ word: "char0_msg_hour_04", voice: 1 },
+					{ word: "char0_msg_hour_05", voice: 2 },
+					{ word: "char0_msg_hour_06", voice: 0 },
+					{ word: "char0_msg_hour_07", voice: 1 },
+					{ word: "char0_msg_hour_08", voice: 2 },
+					{ word: "char0_msg_hour_09", voice: 0 },
+					{ word: "char0_msg_hour_10", voice: 1 },
+					{ word: "char0_msg_hour_11", voice: 2 },
+					{ word: "char0_msg_hour_12", voice: 0 },
+					{ word: "char0_msg_hour_13", voice: 1 },
+					{ word: "char0_msg_hour_14", voice: 2 },
+					{ word: "char0_msg_hour_15", voice: 0 },
+					{ word: "char0_msg_hour_16", voice: 1 },
+					{ word: "char0_msg_hour_17", voice: 2 },
+					{ word: "char0_msg_hour_18", voice: 0 },
+					{ word: "char0_msg_hour_19", voice: 1 },
+					{ word: "char0_msg_hour_20", voice: 2 },
+					{ word: "char0_msg_hour_21", voice: 0 },
+					{ word: "char0_msg_hour_22", voice: 1 },
+					{ word: "char0_msg_hour_23", voice: 2 }
 				]
 			},
 			// FB related scripts
 			fb_message: {
 				animation: "atago",
 				words: [
-					{ word: "（なんで私がそんなことを...）", voice: 3 },
-					{ word: "（あの...メッセージよ）"      , voice: 3 }
+					{ word: "char0_msg_onmsg_000", voice: 3 },
+					{ word: "char0_msg_onmsg_001", voice: 3 }
 				]
 			},
 			fb_clubnotify: {
 				animation: "atago",
 				words: [
-					{ word: "新...しい情報です。"          , voice: 3 },
-					{ word: "（友達からの情報...羨ましい）", voice: 3 }
+					{ word: "char0_msg_onnotify_000", voice: 3 },
+					{ word: "char0_msg_onnotify_001", voice: 3 }
 				]
 			},
 		},

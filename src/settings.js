@@ -16,6 +16,7 @@ function save()
 			language: language
 		}, function() {
 			alert('Success!');
+			location.reload();
 		});
 	}
 }
@@ -29,9 +30,10 @@ function initCharacters()
 		option.setAttribute("value", value);
 		option.innerText = innerText;
 		select.appendChild(option);
+		return option;
 	};
 
-	addOption("none", "None");
+	addOption("none", "").dataset.string = "none";
 	for (var key in characters) {
 		addOption(key, characters[key].name);
 	}
@@ -41,6 +43,7 @@ function initCharacters()
 function load()
 {
 	initCharacters();
+	// TODO use Promise?
 	chrome.storage.sync.get({
 		enable_voice: true,
 		refresh_time: 30,
@@ -51,17 +54,15 @@ function load()
 		document.getElementById('refresh_time').value = items.refresh_time;
 		document.getElementById('character').value = items.character;
 		document.getElementById('language').value = items.language;
-		// TODO use Promise?
 		I18n.init(
 			{locale: items.language},
 			"settings.json",
 			function() {
-				var i18n_obj = this;
 				Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
 					if (dom.dataset.stringParam) {
-						dom.innerText = i18n_obj.t(dom.dataset.string, JSON.parse(dom.dataset.stringParam));
+						dom.innerText = i18n.t(dom.dataset.string, JSON.parse(dom.dataset.stringParam));
 					} else {
-						dom.innerText = i18n_obj.t(dom.dataset.string);
+						dom.innerText = i18n.t(dom.dataset.string);
 					}
 				});
 			}

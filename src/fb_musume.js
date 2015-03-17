@@ -34,6 +34,17 @@ function createBodyObserver() {
 	});
 }
 
+function translateCharacter(character_config)
+{
+	character_config.name = i18n.t(character_config.name);
+	for (script_name in character_config.scripts) {
+		var words = character_config.scripts[script_name].words;
+		words.forEach(function(word) {
+			word.word = i18n.t(word.word);
+		});
+	}
+}
+
 var setting_promise = new Promise(function(resolve, reject) {
 	chrome.storage.sync.get({
 		enable_voice: true,
@@ -54,6 +65,7 @@ var setting_promise = new Promise(function(resolve, reject) {
 		return;
 	}
 	var character_config = characters[user_config.character];
+	translateCharacter(character_config);
 	character = new Character(character_config, user_config);
 	var body_observer = createBodyObserver();
 	body_observer.observe(document.querySelector("body"), {
