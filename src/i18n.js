@@ -22,7 +22,7 @@ var I18n = function(settings, callback) {
 		}.bind(this));
 	}, this)).then(function() {
 		callback.call(this);
-	}.bind(this));
+	}.bind(this)).catch(function(e) { console.error(e.stack); });
 };
 
 I18n.init = function(settings, callback) {
