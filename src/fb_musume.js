@@ -18,6 +18,13 @@ function onFacebookAudioPlay(event) {
 }
 
 function createBodyObserver() {
+	/*
+		TODO
+		Intercept the nodification popup so we can get the notification content?
+		Or, at least, block it.
+		This is the popup element of my Facebook (when inactive)
+		<ul class="hidden_elem _50d1" data-gt="XXXXX" data-reactid="XXXXX"></ul>
+	*/
 	var bind_func = function(tag) {
 		if (tag.nodeName !== 'AUDIO' || tag.parentElement.nodeName !== "BODY" || tag.dataset.fbm) {
 			return;
