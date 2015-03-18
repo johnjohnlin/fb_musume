@@ -23,7 +23,8 @@ voice 1 - many voice path (list)
 
 var characters = {
 	kao: {
-		name: "char0_name",
+		translate: "character0",
+		name: "name",
 		scripts: {
 			// Idle scripts
 			idle: {
@@ -31,85 +32,85 @@ var characters = {
 				words: [
 					/* Disabled because Feit does not agree
 					{
-						word: "char0_msg_idle_000",
+						word: "msg_idle_000",
 						voice: 1,
 						predicate: true
 					},
 					{
-						word: "char0_msg_idle_001",
+						word: "msg_idle_001",
 						voice: 2,
 						predicate: true
 					},
 					*/
 					{
-						word: "char0_msg_idle_002",
+						word: "msg_idle_002",
 						voice: 0,
 						predicate: true
 					},
 					{
-						word: "char0_msg_idle_003",
+						word: "msg_idle_003",
 						voice: 1,
 						predicate: true
 					},
 					{
-						word: "char0_msg_idle_004",
+						word: "msg_idle_004",
 						voice: 2,
 						predicate: true
 					},
 					{
-						word: "char0_msg_idle_017",
+						word: "msg_idle_017",
 						voice: 0,
 						predicate: function() {var weekday = (new Date()).getDay();return weekday === 0 || weekday === 6;}
 					},
 					{
-						word: "char0_msg_idle_005",
+						word: "msg_idle_005",
 						voice: 1,
 						predicate: function() {return (new Date()).getHours() >= 18;}
 					},
 					{
-						word: "char0_msg_idle_006",
+						word: "msg_idle_006",
 						voice: 2,
 						predicate: function() {var month = (new Date()).getMonth(); return 3 <= month && month <= 5;}
 					},
 					{
-						word: "char0_msg_idle_007",
+						word: "msg_idle_007",
 						voice: 1,
 						predicate: function() {var month = (new Date()).getMonth(); return 6 <= month && month <= 8;}
 					},
 					{
-						word: "char0_msg_idle_008",
+						word: "msg_idle_008",
 						voice: 0,
 						predicate: function() {var month = (new Date()).getMonth(); return 9 <= month;}
 					},
 					{
-						word: "char0_msg_idle_009",
+						word: "msg_idle_009",
 						voice: 2,
 						predicate: function() {var month = (new Date()).getMonth(); return month <= 2;}
 					},
 					/* Disabled because Feit does not agree
 					{
-						word: "char0_msg_idle_013",
+						word: "msg_idle_013",
 						voice: 2,
 						predicate: function() {var now = new Date(); return now.getDate() === 1 && now.getMonth() === 3;}
 					},
 					{
-						word: "char0_msg_idle_014",
+						word: "msg_idle_014",
 						voice: 1,
 						predicate: function() {var now = new Date(); return now.getDate() === 15 && now.getMonth() === 7;}
 					},
 					{
-						word: "char0_msg_idle_016",
+						word: "msg_idle_016",
 						voice: 1,
 						predicate: function() {var now = new Date(); return now.getDate() === 25 && now.getMonth() === 11;}
 					},
 					*/
 					{
-						word: "char0_msg_idle_012",
+						word: "msg_idle_012",
 						voice: 2,
 						predicate: function() {var now = new Date(); return now.getDate() === 14 && now.getMonth() === 1;}
 					},
 					{
-						word: "char0_msg_idle_015",
+						word: "msg_idle_015",
 						voice: 0,
 						predicate: function() {var now = new Date(); return now.getDate() === 31 && now.getMonth() === 9;}
 					}
@@ -119,57 +120,57 @@ var characters = {
 			click: {
 				animation: "click",
 				words: [
-					{ word: "char0_msg_click_000", voice: 0 },
-					{ word: "char0_msg_click_001", voice: 1 },
-					{ word: "char0_msg_click_002", voice: 2 },
-					{ word: "char0_msg_click_003", voice: 0 },
-					{ word: "char0_msg_click_004", voice: 1 },
-					{ word: "char0_msg_click_005", voice: 2 }
+					{ word: "msg_click_000", voice: 0 },
+					{ word: "msg_click_001", voice: 1 },
+					{ word: "msg_click_002", voice: 2 },
+					{ word: "msg_click_003", voice: 0 },
+					{ word: "msg_click_004", voice: 1 },
+					{ word: "msg_click_005", voice: 2 }
 				]
 			},
 			// Hour alarm scripts
 			hour: {
 				animation: "idle",
 				words: [
-					{ word: "char0_msg_hour_00", voice: 0 },
-					{ word: "char0_msg_hour_01", voice: 1 },
-					{ word: "char0_msg_hour_02", voice: 2 },
-					{ word: "char0_msg_hour_03", voice: 0 },
-					{ word: "char0_msg_hour_04", voice: 1 },
-					{ word: "char0_msg_hour_05", voice: 2 },
-					{ word: "char0_msg_hour_06", voice: 0 },
-					{ word: "char0_msg_hour_07", voice: 1 },
-					{ word: "char0_msg_hour_08", voice: 2 },
-					{ word: "char0_msg_hour_09", voice: 0 },
-					{ word: "char0_msg_hour_10", voice: 1 },
-					{ word: "char0_msg_hour_11", voice: 2 },
-					{ word: "char0_msg_hour_12", voice: 0 },
-					{ word: "char0_msg_hour_13", voice: 1 },
-					{ word: "char0_msg_hour_14", voice: 2 },
-					{ word: "char0_msg_hour_15", voice: 0 },
-					{ word: "char0_msg_hour_16", voice: 1 },
-					{ word: "char0_msg_hour_17", voice: 2 },
-					{ word: "char0_msg_hour_18", voice: 0 },
-					{ word: "char0_msg_hour_19", voice: 1 },
-					{ word: "char0_msg_hour_20", voice: 2 },
-					{ word: "char0_msg_hour_21", voice: 0 },
-					{ word: "char0_msg_hour_22", voice: 1 },
-					{ word: "char0_msg_hour_23", voice: 2 }
+					{ word: "msg_hour_00", voice: 0 },
+					{ word: "msg_hour_01", voice: 1 },
+					{ word: "msg_hour_02", voice: 2 },
+					{ word: "msg_hour_03", voice: 0 },
+					{ word: "msg_hour_04", voice: 1 },
+					{ word: "msg_hour_05", voice: 2 },
+					{ word: "msg_hour_06", voice: 0 },
+					{ word: "msg_hour_07", voice: 1 },
+					{ word: "msg_hour_08", voice: 2 },
+					{ word: "msg_hour_09", voice: 0 },
+					{ word: "msg_hour_10", voice: 1 },
+					{ word: "msg_hour_11", voice: 2 },
+					{ word: "msg_hour_12", voice: 0 },
+					{ word: "msg_hour_13", voice: 1 },
+					{ word: "msg_hour_14", voice: 2 },
+					{ word: "msg_hour_15", voice: 0 },
+					{ word: "msg_hour_16", voice: 1 },
+					{ word: "msg_hour_17", voice: 2 },
+					{ word: "msg_hour_18", voice: 0 },
+					{ word: "msg_hour_19", voice: 1 },
+					{ word: "msg_hour_20", voice: 2 },
+					{ word: "msg_hour_21", voice: 0 },
+					{ word: "msg_hour_22", voice: 1 },
+					{ word: "msg_hour_23", voice: 2 }
 				]
 			},
 			// FB related scripts
 			fb_message: {
 				animation: "atago",
 				words: [
-					{ word: "char0_msg_onmsg_000", voice: 3 },
-					{ word: "char0_msg_onmsg_001", voice: 3 }
+					{ word: "msg_onmsg_000", voice: 3 },
+					{ word: "msg_onmsg_001", voice: 3 }
 				]
 			},
 			fb_clubnotify: {
 				animation: "atago",
 				words: [
-					{ word: "char0_msg_onnotify_000", voice: 3 },
-					{ word: "char0_msg_onnotify_001", voice: 3 }
+					{ word: "msg_onnotify_000", voice: 3 },
+					{ word: "msg_onnotify_001", voice: 3 }
 				]
 			},
 		},

@@ -44,31 +44,24 @@ function initCharacters()
 
 	addOption("none", "none");
 	for (var key in characters) {
-		addOption(key, characters[key].name, 'messages');
+		addOption(key, characters[key].name, characters[key].translate);
 	}
 }
 
-function initDOMi18n()
+function initDOMi18n(language)
 {
 	// Change DOM language when i18n object is prepared
 	Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
 		var key = dom.dataset.string;
 		var param = (dom.dataset.stringParam)? JSON.parse(dom.dataset.stringParam): null;
 		var filename = dom.dataset.stringFile || null;
-		dom.innerText = i18n.t(key, param, filename);
+		dom.innerText = i18n.t(key, param, filename, language);
 	});
 }
 
 function changeLanguage(event)
 {
-	new Promise(function(resolve, reject) {
-		I18n.init({
-			locale: event.target.value,
-			defaultFilename: 'settings'
-		}, resolve);
-	}).then(function() {
-		initDOMi18n();
-	}).catch(function(e) { console.error(e.stack); });
+	initDOMi18n(event.target.value);
 }
 
 function load()
@@ -82,15 +75,18 @@ function load()
 		}, function(items) { resolve(items); });
 	}).then(function(items) {
 		return new Promise(function(resolve, reject) {
+			var characterTranslateFiles = Object.keys(characters).map(function (key) {
+				return characters[key].translate;
+			});
 			I18n.init({
 				locale: items.language,
-				defaultFilename: 'settings'
+				translateFiles: ['settings'].concat(characterTranslateFiles)
 			}, function() { resolve(items); });
 		});
 	}).then(function(items) {
 		initCharacters();
-		initDOMi18n();
 		set(items);
+		initDOMi18n(items.language);
 	}).catch(function(e) { console.error(e.stack) });
 }
 

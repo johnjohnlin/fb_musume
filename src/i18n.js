@@ -1,72 +1,60 @@
 (function() {
 
 var I18n = function(settings, callback) {
-	if (settings.defaultLocale) {
-		this.defaultLocale = settings.defaultLocale;
-	}
-	if (settings.locale) {
-		this.locale = settings.locale;
-	}
-	if (settings.translateFiles) {
-		this.translateFiles = settings.translateFiles;
-	}
-	if (settings.defaultFilename) {
-		this.defaultFilename = settings.defaultFilename;
-	}
-
+	this.translateFiles = settings.translateFiles;
+	this.defaultFilename = settings.translateFiles[0];
 	this.strings = {};
-	Promise.all(this.translateFiles.map(function(filename) {
+
+	var load_promises = this.translateFiles.map(function(filename) {
 		return new Promise(function(resolve, reject) {
-			this.loadStrings(this.defaultLocale, filename);
-			this.loadStrings(this.locale, filename, resolve);
+			this.loadStrings(filename, resolve);
 		}.bind(this));
-	}, this)).then(function() {
-		callback.call(this);
-	}.bind(this)).catch(function(e) { console.error(e.stack); });
+	}, this);
+
+	Promise
+		.all(load_promises)
+		.then(callback.bind(this))
+		.catch(function(e) { console.error(e.stack); });
 };
 
 I18n.init = function(settings, callback) {
 	window.i18n = new I18n(settings, callback);
 }
 
-I18n.prototype.defaultLocale = "en_US";
-I18n.prototype.locale = "en_US";
-I18n.prototype.localePath = 'src/locales/';
-I18n.prototype.translateFiles = [
-	"messages",
-	"settings"
-]
-I18n.prototype.defaultFilename = "messages";
+I18n.prototype.localePath = 'src/i18n/';
 
-I18n.prototype.loadStrings = function(locale, filename, callback) {
+I18n.prototype.loadStrings = function(filename, callback) {
 	callback = callback || function(){};
-	if (this.strings[filename] && this.strings[filename][locale]) {
+	if (this.strings[filename]) {
 		callback.call(this);
 		return;
 	}
 	var path = chrome.extension.getURL(
-		[this.localePath, locale, "/", filename, ".json"].join(''));
+		[this.localePath, filename, ".json"].join(''));
 	var xhr = new XMLHttpRequest();
 	xhr.addEventListener('load', function(event) {
-		this.onStringsLoad(event, locale, filename);
+		this.onStringsLoad(event, filename);
 		callback.call(this);
 	}.bind(this));
 	xhr.open("GET", path, true);
 	xhr.send();
 }
 
-I18n.prototype.onStringsLoad = function(event, locale, filename) {
+I18n.prototype.onStringsLoad = function(event, filename) {
 	// TODO: error handling
-	this.strings[filename] = this.strings[filename] || {};
-	this.strings[filename][locale] = JSON.parse(event.target.responseText);
+	// this.strings[filename] = this.strings[filename] || {};
+	this.strings[filename] = JSON.parse(event.target.responseText);
 }
 
-I18n.prototype.t = function(key, params, filename) {
+I18n.prototype.t = function(key, params, filename, locale) {
 	filename = filename || this.defaultFilename;
+	var getOneOfObject = function(obj) {
+		return obj[Object.keys(obj)[0]];
+	};
 	var string =
-		this.strings[filename][this.locale][key] ||
-		this.strings[filename][this.defaultLocale][key] ||
-		"";
+		   this.strings[filename][key][locale]
+		|| this.strings[filename][key].en_US
+		|| getOneOfObject(this.strings[filename][key]);
 	if (params) {
 		Object.keys(params).forEach(function(key) {
 			string = string.replace(new RegExp('\\{' + key + '\\}', 'g'), params[key]);
