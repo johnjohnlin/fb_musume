@@ -32,11 +32,21 @@
 	},
 	"refresh_unit": {
 		"en_US": "s",
-		"zh_TW": "秒"
+		"zh_TW": "秒",
+		"ja_JP": "秒"
 	},
 	"save": {
 		"en_US": "Save",
 		"zh_TW": "儲存",
 		"ja_JP": "設定を保存"
+	},
+	"refresh_error": {
+		"en_US": "Refresh time must be greater or equal to {th}s (current: {t})",
+		"zh_TW": "更新時間必須大於 {th} 秒（現在是 {t}）"
+	},
+	"success": {
+		"en_US": "Successfully saved",
+		"zh_TW": "儲存成功",
+		"ja_JP": "保存しました"
 	}
 }

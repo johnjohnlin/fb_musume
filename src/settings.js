@@ -14,7 +14,7 @@ function save()
 	var character    = document.getElementById('character').value;
 	var language     = document.getElementById('language').value;
 	if (refresh_time < 10) {
-		alert('Refresh time must >= 10');
+		alert(i18n.t('refresh_error', {th: 10, t: refresh_time}));
 	} else {
 		chrome.storage.sync.set({
 			enable_voice: enable_voice,
@@ -22,7 +22,7 @@ function save()
 			character: character,
 			language: language
 		}, function() {
-			alert('Success!');
+			alert(i18n.t('success'));
 			location.reload();
 		});
 	}
@@ -57,6 +57,7 @@ function initDOMi18n()
 		var filename = dom.dataset.stringFile || null;
 		dom.innerText = i18n.t(key, param, filename);
 	});
+	document.title = i18n.t("title");
 }
 
 function changeLanguage(event)
