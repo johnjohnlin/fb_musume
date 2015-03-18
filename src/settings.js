@@ -44,7 +44,7 @@ function initCharacters()
 
 	addOption("none", "none");
 	for (var key in characters) {
-		addOption(key, characters[key].name, 'messages');
+		addOption(key, characters[key].name, characters[key].translate);
 	}
 }
 
@@ -61,14 +61,8 @@ function initDOMi18n()
 
 function changeLanguage(event)
 {
-	new Promise(function(resolve, reject) {
-		I18n.init({
-			locale: event.target.value,
-			defaultFilename: 'settings'
-		}, resolve);
-	}).then(function() {
-		initDOMi18n();
-	}).catch(function(e) { console.error(e.stack); });
+	i18n.locale = event.target.value;
+	initDOMi18n();
 }
 
 function load()
@@ -82,15 +76,18 @@ function load()
 		}, function(items) { resolve(items); });
 	}).then(function(items) {
 		return new Promise(function(resolve, reject) {
+			var characterTranslateFiles = Object.keys(characters).map(function (key) {
+				return characters[key].translate;
+			});
 			I18n.init({
 				locale: items.language,
-				defaultFilename: 'settings'
+				translateFiles: ['settings'].concat(characterTranslateFiles)
 			}, function() { resolve(items); });
 		});
 	}).then(function(items) {
 		initCharacters();
-		initDOMi18n();
 		set(items);
+		initDOMi18n();
 	}).catch(function(e) { console.error(e.stack) });
 }
 

@@ -15,7 +15,7 @@
 	"options_page": "src/settings.html",
 	"web_accessible_resources": [
 		"assets/*",
-		"src/locales/*"
+		"src/i18n/*"
 	],
 	"permissions": ["tabs", "storage"]
 }
