@@ -36,6 +36,8 @@ var Character = function(character_config, user_config) {
 Character.prototype.template = [
 	'<div class="fbm-top">',
 		'<img class="character">',
+		'<ul class="dropdown"><li>Hello</li><li>World</li></ul>',
+		'<span class="dropdown-button"></span>',
 		'<div class="msg-box">',
 			'Hello',
 		'</div>',

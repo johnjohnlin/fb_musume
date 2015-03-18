@@ -8,6 +8,37 @@
 	z-index: 9527; /* A large number, thank you 9527 */
 }
 
+.fbm-top .dropdown-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	border: solid transparent 15px;
+	border-top: #888 solid 10px;
+	display: none;
+}
+
+.fbm-top:hover .dropdown-button {
+	display: initial;
+}
+
+.fbm-top ul.dropdown {
+	width: 100%;
+	background-color: black;
+	opacity: 0.8;
+	padding-top: 20px;
+}
+
+.fbm-top ul.dropdown > li {
+	font-size: 20px;
+	color: white;
+	padding: 5px 10px; 
+	border-bottom: white solid 1px;
+}
+
+.fbm-top ul.dropdown > li:last-child {
+	border-bottom: none;
+}
+
 .fbm-top .character {
 	position: absolute;
 	width: 100%;
