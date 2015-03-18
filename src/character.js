@@ -97,6 +97,22 @@ Character.prototype.createElement = function() {
 	return div;
 }
 
+Character.prototype.destroy = function() {
+	this.stop_idle();
+	this.stop_hour();
+	this.stop_animation();
+	var div = this.elem
+	var character = div.querySelector('.character');
+	character.removeEventListener('click', this.onClick);
+	div.removeEventListener('message', this.onMessage);
+	div.removeEventListener('club_notify', this.onClubNotify);
+	this.elem.remove();
+	// prevent circular reference
+	Object.keys(this).forEach(function(key) {
+		this[key] = null;
+	});
+}
+
 /* members */
 Character.prototype.trigger = function(event_name, detail) {
 	var event = new CustomEvent(event_name, true, true, {detail: detail});
@@ -127,13 +143,19 @@ Character.prototype.stop_idle = function() {
 	this.next_idle = null;
 }
 
-// I will never stop this loop
 Character.prototype.start_hour = function() {
 	var hour_tick_func = function() {
 		this.onHour()
-		setTimeout(hour_tick_func, msToNextHour());
+		this.next_hour = setTimeout(hour_tick_func, msToNextHour());
 	}.bind(this);
-	setTimeout(hour_tick_func, msToNextHour());
+	this.next_hour = setTimeout(hour_tick_func, msToNextHour());
+}
+
+Character.prototype.stop_hour = function() {
+	if (this.next_hour) {
+		clearTimeout(this.next_hour);
+	}
+	this.next_hour = null;
 }
 
 Character.prototype.start_animation = function(animation_name) {
