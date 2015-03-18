@@ -60,9 +60,13 @@ var setting_promise = new Promise(function(resolve, reject) {
 		language: "ja_JP"
 	}, function(user_config) { resolve(user_config); });
 }).then(function(user_config) {
+	var characterTranslateFiles = Object.keys(characters).map(function (key) {
+		return characters[key].translate;
+	});
 	return new Promise(function(resolve, reject) {
 		I18n.init({
-			locale: user_config.language
+			locale: user_config.language,
+			translateFiles: characterTranslateFiles
 		},
 		function() { resolve(user_config); });
 	});

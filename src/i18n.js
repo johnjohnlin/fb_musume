@@ -3,6 +3,7 @@
 var I18n = function(settings, callback) {
 	this.translateFiles = settings.translateFiles;
 	this.defaultFilename = settings.translateFiles[0];
+	this.locale = settings.locale || "en_US";
 	this.strings = {};
 
 	var load_promises = this.translateFiles.map(function(filename) {
@@ -46,14 +47,13 @@ I18n.prototype.onStringsLoad = function(event, filename) {
 	this.strings[filename] = JSON.parse(event.target.responseText);
 }
 
-I18n.prototype.t = function(key, params, filename, locale) {
+I18n.prototype.t = function(key, params, filename) {
 	filename = filename || this.defaultFilename;
 	var getOneOfObject = function(obj) {
 		return obj[Object.keys(obj)[0]];
 	};
 	var string =
-		   this.strings[filename][key][locale]
-		|| this.strings[filename][key].en_US
+		   this.strings[filename][key][this.locale]
 		|| getOneOfObject(this.strings[filename][key]);
 	if (params) {
 		Object.keys(params).forEach(function(key) {

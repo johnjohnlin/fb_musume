@@ -48,20 +48,21 @@ function initCharacters()
 	}
 }
 
-function initDOMi18n(language)
+function initDOMi18n()
 {
 	// Change DOM language when i18n object is prepared
 	Array.prototype.forEach.call(document.querySelectorAll("[data-string]"), function(dom) {
 		var key = dom.dataset.string;
 		var param = (dom.dataset.stringParam)? JSON.parse(dom.dataset.stringParam): null;
 		var filename = dom.dataset.stringFile || null;
-		dom.innerText = i18n.t(key, param, filename, language);
+		dom.innerText = i18n.t(key, param, filename);
 	});
 }
 
 function changeLanguage(event)
 {
-	initDOMi18n(event.target.value);
+	i18n.locale = event.target.value;
+	initDOMi18n();
 }
 
 function load()
@@ -86,7 +87,7 @@ function load()
 	}).then(function(items) {
 		initCharacters();
 		set(items);
-		initDOMi18n(items.language);
+		initDOMi18n();
 	}).catch(function(e) { console.error(e.stack) });
 }
 
