@@ -36,10 +36,11 @@ var Character = function(character_config, user_config) {
 Character.prototype.template = [
 	'<div class="fbm-top">',
 		'<img class="character">',
-		'<ul class="dropdown"><li>Hello</li><li>World</li></ul>',
-		'<span class="dropdown-button"></span>',
+		'<div class="dropdown">',
+			'<ul class="menu"></ul>',
+			'<span class="button"></span>',
+		'</div>',
 		'<div class="msg-box">',
-			'Hello',
 		'</div>',
 		'<div class="voice-set">',
 		'</div>',
@@ -89,11 +90,37 @@ Character.prototype.createElement = function() {
 		});
 	}
 
+	// Create dropdown DOMs
+	var dropdown_menu = div.querySelector('.dropdown .menu');
+	var createDropdown = function(text, func) {
+		var li = document.createElement("li");
+		li.innerText = text;
+		li.addEventListener("click", func);
+		dropdown_menu.appendChild(li);
+	}
+
+	// console.log(i18n); // this is undefined
+	// var i18n = i18n || {t:function(x){return x;}}; // prevent errors
+
+	// But this works, WTF
+	createDropdown(i18n.t("setting"), function() {
+		// failed (about:blank is opened)
+		window.open(chrome.extension.getURL('src/settings.html'));
+		// failed (error)
+		chrome.tabs.create({url: chrome.extension.getURL('src/settings.html')});
+	});
+	createDropdown(i18n.t("reload"), function() {
+		alert(i18n.t("reload"));
+	});
+
 	// Register events
 	var character = div.querySelector('.character');
+	var dropdown_button = div.querySelector('.dropdown .button');
 	character.addEventListener('click', this.onClick);
+	div.addEventListener('mouseleave', this.onMouseleave);
 	div.addEventListener('message', this.onMessage);
 	div.addEventListener('club_notify', this.onClubNotify);
+	dropdown_button.addEventListener('click', this.onDropdownToggle);
 	return div;
 }
 
@@ -248,6 +275,14 @@ Character.prototype.onMessage = function(event) {
 
 Character.prototype.onClubNotify = function(event) {
 	this.onMessage();
+}
+
+Character.prototype.onDropdownToggle = function(event) {
+	this.elem.querySelector('.dropdown').classList.toggle('active');
+}
+
+Character.prototype.onMouseleave = function(event) {
+	this.elem.querySelector('.dropdown').classList.remove('active');
 }
 
 window.Character = Character;

@@ -1,0 +1,12 @@
+{
+	"setting": {
+		"en_US": "Setting page",
+		"ja_JP": "設定ページ",
+		"zh_TW": "設定頁面"
+	},
+	"reload": {
+		"en_US": "Reload settings",
+		"ja_JP": "設定をリロード",
+		"zh_TW": "重新讀取設定"
+	}
+}

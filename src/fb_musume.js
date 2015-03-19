@@ -66,7 +66,7 @@ var setting_promise = new Promise(function(resolve, reject) {
 	return new Promise(function(resolve, reject) {
 		I18n.init({
 			locale: user_config.language,
-			translateFiles: characterTranslateFiles
+			translateFiles: ["fb_musume"].concat(characterTranslateFiles)
 		},
 		function() { resolve(user_config); });
 	});
