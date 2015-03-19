@@ -99,6 +99,7 @@ Character.prototype.createElement = function() {
 		dropdown_menu.appendChild(li);
 	}
 
+	// this two event handlers do not bind with 'this', without removing them is ok.
 	createDropdown(i18n.t("setting"), function() {
 		window.open(chrome.extension.getURL('src/settings.html'));
 	});
@@ -123,9 +124,12 @@ Character.prototype.destroy = function() {
 	this.stop_animation();
 	var div = this.elem
 	var character = div.querySelector('.character');
+	var dropdown_button = div.querySelector('.dropdown .button');
 	character.removeEventListener('click', this.onClick);
+	div.removeEventListener('mouseleave', this.onMouseleave);
 	div.removeEventListener('message', this.onMessage);
 	div.removeEventListener('club_notify', this.onClubNotify);
+	dropdown_button.removeEventListener('click', this.onDropdownToggle);
 	this.elem.remove();
 	// prevent circular reference
 	Object.keys(this).forEach(function(key) {
