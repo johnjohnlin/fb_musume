@@ -47,6 +47,8 @@
 }
 
 .fbm-top .dropdown:not(.active) .menu {
+	height: 0;
+	overflow: hidden;
 	opacity: 0;
 }
 
