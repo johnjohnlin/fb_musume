@@ -39,6 +39,7 @@
 }
 
 .fbm-top .dropdown .menu {
+	max-height: 200px;
 	position: absolute;
 	width: 100%;
 	background-color: black;
@@ -47,7 +48,7 @@
 }
 
 .fbm-top .dropdown:not(.active) .menu {
-	height: 0;
+	max-height: 0px;
 	overflow: hidden;
 	opacity: 0;
 }
