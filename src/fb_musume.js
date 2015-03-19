@@ -43,11 +43,11 @@ function createBodyObserver() {
 
 function translateCharacter(character_config)
 {
-	character_config.name = i18n.t(character_config.name);
+	character_config.name = i18n.t(character_config.name, {}, character_config.translate);
 	for (script_name in character_config.scripts) {
 		var words = character_config.scripts[script_name].words;
 		words.forEach(function(word) {
-			word.word = i18n.t(word.word);
+			word.word = i18n.t(word.word, {}, character_config.translate);
 		});
 	}
 }
