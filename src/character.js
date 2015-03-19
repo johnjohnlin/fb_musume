@@ -99,15 +99,8 @@ Character.prototype.createElement = function() {
 		dropdown_menu.appendChild(li);
 	}
 
-	// console.log(i18n); // this is undefined
-	// var i18n = i18n || {t:function(x){return x;}}; // prevent errors
-
-	// But this works, WTF
 	createDropdown(i18n.t("setting"), function() {
-		// failed (about:blank is opened)
 		window.open(chrome.extension.getURL('src/settings.html'));
-		// failed (error)
-		chrome.tabs.create({url: chrome.extension.getURL('src/settings.html')});
 	});
 	createDropdown(i18n.t("reload"), function() {
 		alert(i18n.t("reload"));
