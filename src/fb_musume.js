@@ -11,20 +11,21 @@ var FBMusume = function(user_config) {
 /* static data */
 FBMusume.prototype.template = [
 '<div class="fbm-top">',
+	'<div class="character-area">',
+	'</div>',
 	'<div class="dropdown">',
 		'<ul class="menu"></ul>',
 		'<span class="button"></span>',
 	'</div>',
-	'<div class="character-area">',
-	'</div>',
 '</div>'
-];
+].join('');
 
 /* construct functions */
 FBMusume.prototype.initEventFunctions = function() {
-	Object.keys(Character.prototype).filter(function(key) {
+	Object.keys(FBMusume.prototype).filter(function(key) {
 		return /^on.*/.test(key);
 	}).forEach(function(key) {
+		console.log(key);
 		this[key] = this[key].bind(this);
 	}, this);
 }
@@ -54,19 +55,12 @@ FBMusume.prototype.createElement = function() {
 };
 
 FBMusume.prototype.createBodyObserver = function() {
-	/*
-		TODO
-		Intercept the nodification popup so we can get the notification content?
-		Or, at least, block it.
-		This is the popup element of my Facebook (when inactive)
-		<ul class="hidden_elem _50d1" data-gt="XXXXX" data-reactid="XXXXX"></ul>
-	*/
 	var bind_func = function(tag) {
 		if (tag.nodeName !== 'AUDIO' || tag.parentElement.nodeName !== "BODY" || tag.dataset.fbm) {
 			return;
 		}
 		tag.dataset.fbm = true;
-		tag.addEventListener('play', onFacebookAudioPlay);
+		tag.addEventListener('play', this.onFacebookAudioPlay);
 	}
 	// query one first
 	Array.prototype.forEach.call(document.querySelectorAll('body>audio'), bind_func);
@@ -160,7 +154,7 @@ FBMusume.initI18n = function(user_config) {
 }
 
 FBMusume.init = function() {
-	Promise.resolve
+	Promise.resolve()
 	.then(FBMusume.initUserSettings)
 	.then(FBMusume.initI18n)
 	.then(function(user_config) {
