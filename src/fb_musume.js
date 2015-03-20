@@ -1,32 +1,59 @@
 (function() {
 
-var character = null;
-var fbm_top_DOM = null;
-var fbm_template = [
+var FBMusume = function(user_config) {
+	this.initEventFunctions();
+	this.user_config = user_config;
+	this.character = null;
+	this.elem = this.createElement();
+	this.body_observer = this.createBodyObserver();
+};
+
+/* static data */
+FBMusume.prototype.template = [
 '<div class="fbm-top">',
 	'<div class="dropdown">',
 		'<ul class="menu"></ul>',
 		'<span class="button"></span>',
 	'</div>',
+	'<div class="character-area">',
+	'</div>',
 '</div>'
-].join("");
+];
 
-function onFacebookAudioPlay(event) {
-	if (!character) {
-		return;
-	}
-	var audio = event.target;
-	audio.pause();
-	if (audio.src === "https://fbstatic-a.akamaihd.net/rsrc.php/yy/r/odIeERVR1c5.mp3") {
-		// club
-		character.trigger('club_notify');
-	} else {
-		// I assume all of the other messages are msg
-		character.trigger("message");
-	}
+/* construct functions */
+FBMusume.prototype.initEventFunctions = function() {
+	Object.keys(Character.prototype).filter(function(key) {
+		return /^on.*/.test(key);
+	}).forEach(function(key) {
+		this[key] = this[key].bind(this);
+	}, this);
 }
 
-function createBodyObserver() {
+FBMusume.prototype.createElement = function() {
+	var div = document.createElement('div');
+	div.innerHTML = this.template;
+	div = div.firstChild;
+
+	// Create Dropdown
+	var dropdown_menu = div.querySelector('.dropdown .menu');
+	var dropdown_button = div.querySelector('.dropdown .button');
+	var createDropdown = function(text, func) {
+		var li = document.createElement("li");
+		li.innerText = text;
+		li.addEventListener("click", func);
+		dropdown_menu.appendChild(li);
+	}
+	createDropdown(i18n.t("setting"), function() {
+		window.open(chrome.extension.getURL('src/settings.html'));
+	});
+	createDropdown(i18n.t("reload"), reloadFBMusume);
+	div.addEventListener('mouseleave', this.onDropdownOff);
+	dropdown_button.addEventListener('click', this.onDropdownToggle);
+
+	return div;
+};
+
+FBMusume.prototype.createBodyObserver = function() {
 	/*
 		TODO
 		Intercept the nodification popup so we can get the notification content?
@@ -48,10 +75,25 @@ function createBodyObserver() {
 			Array.prototype.forEach.call(mutation.addedNodes, bind_func);
 		});
 	});
+};
+
+/* members */
+FBMusume.prototype.loadCharacter = function(character_name) {
+	character_name = character_name || this.user_config.character;
+	if (character_name === 'none') {
+		return;
+	}
+	if (this.character) {
+		this.character.destroy();
+		this.character = null;
+	}
+	var character_config = characters[character_name];
+	this.translateCharacter(character_config);
+	this.character = new Character(character_config, this.user_config);
+	this.elem.querySelector('.character-area').appendChild(this.character.elem);
 }
 
-function translateCharacter(character_config)
-{
+FBMusume.prototype.translateCharacter = function(character_config) {
 	character_config.name = i18n.t(character_config.name, {}, character_config.translate);
 	for (script_name in character_config.scripts) {
 		var words = character_config.scripts[script_name].words;
@@ -61,82 +103,81 @@ function translateCharacter(character_config)
 	}
 }
 
-function dropdownToggle() {
-	fbm_top_DOM.querySelector('.dropdown').classList.toggle('active');
+FBMusume.prototype.startOccupyYourFacebook_YAY = function() {
+	document.querySelector("body").appendChild(this.elem);
+	this.body_observer.observe(document.querySelector("body"), {
+		childList: true, subtree: true
+	});
 }
 
-function dropdownOff() {
-	fbm_top_DOM.querySelector('.dropdown').classList.remove('active');
+/* events */
+FBMusume.prototype.onFacebookAudioPlay = function(event) {
+	if (!this.character) {
+		return
+	}
+	var audio = event.target;
+	audio.pause();
+	if (audio.src === "https://fbstatic-a.akamaihd.net/rsrc.php/yy/r/odIeERVR1c5.mp3") {
+		// club
+		this.character.trigger('club_notify');
+	} else {
+		// I assume all of the other messages are msg
+		this.character.trigger("message");
+	}
 }
 
-function initFBMusume()
-{
-	var setting_promise = new Promise(function(resolve, reject) {
-		// (1) Load user settings
+FBMusume.prototype.onDropdownToggle = function() {
+	this.elem.querySelector('.dropdown').classList.toggle('active');
+}
+
+FBMusume.prototype.onDropdownOff = function() {
+	this.elem.querySelector('.dropdown').classList.remove('active');
+}
+
+/* static members */
+FBMusume.initUserSettings = function() {
+	return new Promise(function(resolve, reject) {
 		chrome.storage.sync.get({
 			enable_voice: true,
 			refresh_time: 30,
 			character: Object.keys(characters)[0],
 			language: "ja_JP"
 		}, function(user_config) { resolve(user_config); });
-	}).then(function(user_config) {
-		// (2) Load i18n
-		var characterTranslateFiles = Object.keys(characters).map(function (key) {
-			return characters[key].translate;
-		});
-		return new Promise(function(resolve, reject) {
-			I18n.init({
-				locale: user_config.language,
-				translateFiles: ["fb_musume"].concat(characterTranslateFiles)
-			},
-			function() { resolve(user_config); });
-		});
-	}).then(function(user_config) {
-		// (3) Translate characters
-		if (user_config.character === "none") {
-			return;
-		}
-		var character_config = characters[user_config.character];
-		translateCharacter(character_config);
-
-		// (4) Initialize characters and its DOMs
-		character = new Character(character_config, user_config);
-
-		// (5) Initialize FB-related DOMs and register event
-		var div = document.createElement("div");
-		div.innerHTML = fbm_template;
-		fbm_top_DOM = div.firstChild;
-
-		fbm_top_DOM.insertBefore(character.elem, fbm_top_DOM.firstChild); // prepend
-		document.querySelector("body").appendChild(fbm_top_DOM);
-		var dropdown_menu = fbm_top_DOM.querySelector('.dropdown .menu');
-		var dropdown_button = fbm_top_DOM.querySelector('.dropdown .button');
-		var createDropdown = function(text, func) {
-			var li = document.createElement("li");
-			li.innerText = text;
-			li.addEventListener("click", func);
-			dropdown_menu.appendChild(li);
-		}
-		createDropdown(i18n.t("setting"), function() {
-			window.open(chrome.extension.getURL('src/settings.html'));
-		});
-		createDropdown(i18n.t("reload"), reloadFBMusume);
-
-		var body_observer = createBodyObserver();
-		body_observer.observe(document.querySelector("body"), {
-			childList: true, subtree: true
-		});
-		fbm_top_DOM.addEventListener('mouseleave', dropdownOff);
-		dropdown_button.addEventListener('click', dropdownToggle);
-	}).catch(function(e) { console.error(e.stack); });
+	});
 }
 
+FBMusume.initI18n = function(user_config) {
+	var characterTranslateFiles = Object.keys(characters).map(function (key) {
+		return characters[key].translate;
+	});
+	return new Promise(function(resolve, reject) {
+		I18n.init({
+			locale: user_config.language,
+			translateFiles: ["fb_musume"].concat(characterTranslateFiles)
+		},
+		function() { resolve(user_config); });
+	});
+}
+
+FBMusume.init = function() {
+	Promise.resolve
+	.then(FBMusume.initUserSettings)
+	.then(FBMusume.initI18n)
+	.then(function(user_config) {
+		window.fb_musume = new FBMusume(user_config);
+		fb_musume.loadCharacter();
+		fb_musume.startOccupyYourFacebook_YAY();
+	})
+	.catch(function(e) { console.error(e.stack); });
+}
+
+// TODO: move it
 function reloadFBMusume()
 {
 	// TODO: reset everything
 	character.destroy();
 }
 
-initFBMusume();
+FBMusume.init();
 
 })();
