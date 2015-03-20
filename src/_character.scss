@@ -1,0 +1,45 @@
+.character .canvas {
+	position: absolute;
+	width: $character-w;
+	height: $character-w;
+}
+
+.character .msg-box {
+	pointer-event: none;
+	position: absolute;
+	overflow: hidden;
+	margin: 0 auto;
+	border: solid $msg-box-border;
+	border-radius: $msg-box-radius;
+	background: #fff0f8;
+	opacity: 0.8;
+	left: ($character-w - $msg-box-w)*0.5;
+}
+
+.character .msg-box.show {
+	-webkit-animation: msg-box-show 1s;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes msg-box-show {
+	0% {
+		width: 0px;
+		height: 0px;
+		bottom: $msg-box-inner-h + $msg-box-border;
+		padding: 5px 0px;
+	}
+	40% {
+		width: $msg-box-inner-w;
+		padding: 5px 15px;
+	}
+	60% {
+		width: msg-box-inner-w;
+		padding: 5px 15px;
+	}
+	100% {
+		width: $msg-box-inner-w;
+		padding: 5px 15px;
+		height: $msg-box-inner-h;
+		bottom: $msg-box-bottom;
+	}
+}

@@ -1,9 +1,10 @@
+@import "character_variables";
 .fbm-top {
 	position: fixed;
 	bottom: 0px;
 	left: 0px;
-	width: 250px;
-	height: 250px;
+	width: $character-w;
+	height: $character-h;
 	padding: 0;
 	z-index: 9527; /* A large number, thank you 9527 */
 
@@ -69,4 +70,10 @@
 		}
 	}
 
+	@import 'character';
+}
+
+/* Facebook notification */
+._50d1 {
+	bottom: 280px;
 }

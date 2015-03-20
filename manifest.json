@@ -7,7 +7,7 @@
 	"content_scripts": [
 		{
 			"matches":["https://*.facebook.com/*","http://*.facebook.com/*"],
-			"css": ["src/character.css", "src/fb_musume.css"],
+			"css": ["src/fb_musume.css"],
 			"js": ["src/i18n.js", "src/character_configs.js", "src/character.js", "src/fb_musume.js"],
 			"run_at": "document_end"
 		}
@@ -15,8 +15,7 @@
 	"options_page": "src/settings.html",
 	"web_accessible_resources": [
 		"assets/*",
-		"src/*",
-		"src/i18n/*"
+		"src/*"
 	],
 	"permissions": ["tabs", "storage"]
 }

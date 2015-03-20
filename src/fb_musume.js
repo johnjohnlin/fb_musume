@@ -1,6 +1,15 @@
 (function() {
 
 var character = null;
+var fbm_top_DOM = null;
+var fbm_template = [
+'<div class="fbm-top">',
+	'<div class="dropdown">',
+		'<ul class="menu"></ul>',
+		'<span class="button"></span>',
+	'</div>',
+'</div>'
+].join("");
 
 function onFacebookAudioPlay(event) {
 	if (!character) {
@@ -52,35 +61,56 @@ function translateCharacter(character_config)
 	}
 }
 
-var setting_promise = new Promise(function(resolve, reject) {
-	chrome.storage.sync.get({
-		enable_voice: true,
-		refresh_time: 30,
-		character: Object.keys(characters)[0],
-		language: "ja_JP"
-	}, function(user_config) { resolve(user_config); });
-}).then(function(user_config) {
-	var characterTranslateFiles = Object.keys(characters).map(function (key) {
-		return characters[key].translate;
-	});
-	return new Promise(function(resolve, reject) {
-		I18n.init({
-			locale: user_config.language,
-			translateFiles: ["fb_musume"].concat(characterTranslateFiles)
-		},
-		function() { resolve(user_config); });
-	});
-}).then(function(user_config) {
-	if (user_config.character === "none") {
-		return;
-	}
-	var character_config = characters[user_config.character];
-	translateCharacter(character_config);
-	character = new Character(character_config, user_config);
-	var body_observer = createBodyObserver();
-	body_observer.observe(document.querySelector("body"), {
-		childList: true, subtree: true
-	});
-}).catch(function(e) { console.error(e.stack); });
+function initFBMusume()
+{
+	var setting_promise = new Promise(function(resolve, reject) {
+		// (1) Load user settings
+		chrome.storage.sync.get({
+			enable_voice: true,
+			refresh_time: 30,
+			character: Object.keys(characters)[0],
+			language: "ja_JP"
+		}, function(user_config) { resolve(user_config); });
+	}).then(function(user_config) {
+		// (2) Load i18n
+		var characterTranslateFiles = Object.keys(characters).map(function (key) {
+			return characters[key].translate;
+		});
+		return new Promise(function(resolve, reject) {
+			I18n.init({
+				locale: user_config.language,
+				translateFiles: ["fb_musume"].concat(characterTranslateFiles)
+			},
+			function() { resolve(user_config); });
+		});
+	}).then(function(user_config) {
+		// (3) Translate characters
+		if (user_config.character === "none") {
+			return;
+		}
+		var character_config = characters[user_config.character];
+		translateCharacter(character_config);
+
+		// (4) Initialize characters and its DOMs
+		character = new Character(character_config, user_config);
+
+		// (5) Initialize FB-related DOMs and register event
+		var div = document.createElement("div");
+		div.innerHTML = fbm_template;
+		fbm_top_DOM = div.firstChild;
+		fbm_top_DOM.appendChild(character.elem);
+		document.querySelector("body").appendChild(fbm_top_DOM);
+		var body_observer = createBodyObserver();
+		body_observer.observe(document.querySelector("body"), {
+			childList: true, subtree: true
+		});
+	}).catch(function(e) { console.error(e.stack); });
+}
+
+function destroyFBMusume()
+{
+}
+
+initFBMusume();
 
 })();

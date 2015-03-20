@@ -6,7 +6,28 @@
   height: 250px;
   padding: 0;
   z-index: 9527;
-  /* A large number, thank you 9527 */ }
+  /* A large number, thank you 9527 */
+  @-webkit-keyframes msg-box-show {
+    0% {
+      width: 0px;
+      height: 0px;
+      bottom: 58px;
+      padding: 5px 0px; }
+
+    40% {
+      width: 226px;
+      padding: 5px 15px; }
+
+    60% {
+      width: msg-box-inner-w;
+      padding: 5px 15px; }
+
+    100% {
+      width: 226px;
+      padding: 5px 15px;
+      height: 56px;
+      bottom: 10px; } }
+ }
   .fbm-top:hover .dropdown .button {
     opacity: 1; }
   .fbm-top .dropdown.active .button {
@@ -44,3 +65,24 @@
         border-bottom: none; }
       .fbm-top .dropdown ul.menu li:hover {
         background-color: #555; }
+  .fbm-top .character .canvas {
+    position: absolute;
+    width: 250px;
+    height: 250px; }
+  .fbm-top .character .msg-box {
+    pointer-event: none;
+    position: absolute;
+    overflow: hidden;
+    margin: 0 auto;
+    border: solid 2px;
+    border-radius: 5px;
+    background: #fff0f8;
+    opacity: 0.8;
+    left: 10px; }
+  .fbm-top .character .msg-box.show {
+    -webkit-animation: msg-box-show 1s;
+    -webkit-animation-fill-mode: forwards; }
+
+/* Facebook notification */
+._50d1 {
+  bottom: 280px; }

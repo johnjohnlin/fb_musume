@@ -1,0 +1,9 @@
+$character-w: 250px;
+$character-h: 250px;
+$msg-box-w: 230px;
+$msg-box-h: 60px;
+$msg-box-border: 2px;
+$msg-box-inner-w: $msg-box-w - 2*$msg-box-border;
+$msg-box-inner-h: $msg-box-h - 2*$msg-box-border;
+$msg-box-bottom: 10px;
+$msg-box-radius: 5px;

@@ -21,7 +21,6 @@ var Character = function(character_config, user_config) {
 
 	// Initialize DOM objects
 	this.elem = this.createElement();
-	document.querySelector("body").appendChild(this.elem);
 
 	// Class variables
 	this.idle_count = 0;
@@ -34,12 +33,8 @@ var Character = function(character_config, user_config) {
 
 /* static data */
 Character.prototype.template = [
-	'<div class="fbm-top">',
-		'<img class="character">',
-		'<div class="dropdown">',
-			'<ul class="menu"></ul>',
-			'<span class="button"></span>',
-		'</div>',
+	'<div class="character">',
+		'<img class="canvas">',
 		'<div class="msg-box">',
 		'</div>',
 		'<div class="voice-set">',
@@ -78,6 +73,7 @@ Character.prototype.createElement = function() {
 	// Create DOMs
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
+	div = div.firstChild;
 
 	// Create voice DOMs
 	if (this.user_config.enable_voice) {
@@ -90,6 +86,7 @@ Character.prototype.createElement = function() {
 		});
 	}
 
+	/*
 	// Create dropdown DOMs
 	var dropdown_menu = div.querySelector('.dropdown .menu');
 	var createDropdown = function(text, func) {
@@ -106,15 +103,16 @@ Character.prototype.createElement = function() {
 	createDropdown(i18n.t("reload"), function() {
 		alert(i18n.t("reload"));
 	});
+	*/
 
 	// Register events
-	var character = div.querySelector('.character');
-	var dropdown_button = div.querySelector('.dropdown .button');
+	var character = div.querySelector('.canvas');
+	// var dropdown_button = div.querySelector('.dropdown .button');
 	character.addEventListener('click', this.onClick);
 	div.addEventListener('mouseleave', this.onMouseleave);
 	div.addEventListener('message', this.onMessage);
 	div.addEventListener('club_notify', this.onClubNotify);
-	dropdown_button.addEventListener('click', this.onDropdownToggle);
+	// dropdown_button.addEventListener('click', this.onDropdownToggle);
 	return div;
 }
 
@@ -123,13 +121,13 @@ Character.prototype.destroy = function() {
 	this.stop_hour();
 	this.stop_animation();
 	var div = this.elem
-	var character = div.querySelector('.character');
-	var dropdown_button = div.querySelector('.dropdown .button');
+	var character = div.querySelector('.canvas');
+	// var dropdown_button = div.querySelector('.dropdown .button');
 	character.removeEventListener('click', this.onClick);
 	div.removeEventListener('mouseleave', this.onMouseleave);
 	div.removeEventListener('message', this.onMessage);
 	div.removeEventListener('club_notify', this.onClubNotify);
-	dropdown_button.removeEventListener('click', this.onDropdownToggle);
+	// dropdown_button.removeEventListener('click', this.onDropdownToggle);
 	this.elem.remove();
 	// prevent circular reference
 	Object.keys(this).forEach(function(key) {
@@ -191,7 +189,7 @@ Character.prototype.start_animation = function(animation_name) {
 
 	var animation = this.config.animations[this.animation_name];
 	var frame_idx = 0;
-	var character = this.elem.querySelector('.character');
+	var character = this.elem.querySelector('.canvas');
 
 	var animation_tick_func = function() {
 		var frame = animation[frame_idx];
@@ -242,14 +240,14 @@ Character.prototype.onIdle = function() {
 	var idle_scripts = this.config.scripts.idle;
 	var word = this.words.randomSelect(); // select from the filtered one
 	this.start_animation(idle_scripts.animation);
-	this.say(word.word, word.voice);
+	this.say(word.word_translated, word.voice);
 }
 
 Character.prototype.onClick = function() {
 	var click_scripts = this.config.scripts.click;
 	var word = click_scripts.words.randomSelect();
 	this.start_animation(click_scripts.animation);
-	this.say(word.word, word.voice);
+	this.say(word.word_translated, word.voice);
 	this.start_idle(this.user_config.refresh_time_ms, true);
 }
 
@@ -258,7 +256,7 @@ Character.prototype.onHour = function() {
 	var hour_scripts = this.config.scripts.hour;
 	var word = hour_scripts.words[(new Date()).getHours()]
 	this.start_animation(hour_scripts.animation);
-	this.say(word.word, word.voice);
+	this.say(word.word_translated, word.voice);
 	this.start_idle(this.user_config.refresh_time_ms);
 }
 
@@ -266,7 +264,7 @@ Character.prototype.onMessage = function(event) {
 	var fb_message_scripts = this.config.scripts.fb_message;
 	var word = fb_message_scripts.words.randomSelect();
 	this.start_animation(fb_message_scripts.animation);
-	this.say(word.word, word.voice);
+	this.say(word.word_translated, word.voice);
 	this.start_idle(this.user_config.refresh_time_ms);
 }
 
@@ -274,13 +272,13 @@ Character.prototype.onClubNotify = function(event) {
 	this.onMessage();
 }
 
-Character.prototype.onDropdownToggle = function(event) {
-	this.elem.querySelector('.dropdown').classList.toggle('active');
-}
-
-Character.prototype.onMouseleave = function(event) {
-	this.elem.querySelector('.dropdown').classList.remove('active');
-}
+// Character.prototype.onDropdownToggle = function(event) {
+// 	this.elem.querySelector('.dropdown').classList.toggle('active');
+// }
+//
+// Character.prototype.onMouseleave = function(event) {
+// 	this.elem.querySelector('.dropdown').classList.remove('active');
+// }
 
 window.Character = Character;
 
