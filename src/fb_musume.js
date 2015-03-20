@@ -56,7 +56,7 @@ function translateCharacter(character_config)
 	for (script_name in character_config.scripts) {
 		var words = character_config.scripts[script_name].words;
 		words.forEach(function(word) {
-			word.word = i18n.t(word.word, {}, character_config.translate);
+			word.word_translated = i18n.t(word.word, {}, character_config.translate);
 		});
 	}
 }

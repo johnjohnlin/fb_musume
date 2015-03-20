@@ -6,38 +6,17 @@
   height: 250px;
   padding: 0;
   z-index: 9527;
-  /* A large number, thank you 9527 */
-  @-webkit-keyframes msg-box-show {
-    0% {
-      width: 0px;
-      height: 0px;
-      bottom: 58px;
-      padding: 5px 0px; }
-
-    40% {
-      width: 226px;
-      padding: 5px 15px; }
-
-    60% {
-      width: msg-box-inner-w;
-      padding: 5px 15px; }
-
-    100% {
-      width: 226px;
-      padding: 5px 15px;
-      height: 56px;
-      bottom: 10px; } }
- }
+  /* A large number, thank you 9527 */ }
   .fbm-top:hover .dropdown .button {
     opacity: 1; }
   .fbm-top .dropdown.active .button {
     top: -5px;
-    border-bottom: #888888 solid 10px; }
+    border-bottom: #888 solid 10px; }
   .fbm-top .dropdown:not(.active) .button {
     top: 10px;
-    border-top: #888888 solid 10px; }
+    border-top: #888 solid 10px; }
   .fbm-top .dropdown:not(.active) .button:hover {
-    border-top: white solid 10px; }
+    border-top: #FFF solid 10px; }
   .fbm-top .dropdown:not(.active) .menu {
     max-height: 0px;
     overflow: hidden;
@@ -82,7 +61,23 @@
   .fbm-top .character .msg-box.show {
     -webkit-animation: msg-box-show 1s;
     -webkit-animation-fill-mode: forwards; }
-
+@-webkit-keyframes msg-box-show {
+  0% {
+    width: 0px;
+    height: 0px;
+    bottom: 48px;
+    padding: 5px 0px; }
+  40% {
+    width: 196px;
+    padding: 5px 15px; }
+  60% {
+    width: msg-box-inner-w;
+    padding: 5px 15px; }
+  100% {
+    width: 196px;
+    padding: 5px 15px;
+    height: 46px;
+    bottom: 10px; } }
 /* Facebook notification */
 ._50d1 {
   bottom: 280px; }
