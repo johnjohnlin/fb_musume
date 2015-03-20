@@ -61,6 +61,14 @@ function translateCharacter(character_config)
 	}
 }
 
+function dropdownToggle() {
+	fbm_top_DOM.querySelector('.dropdown').classList.toggle('active');
+}
+
+function dropdownOff() {
+	fbm_top_DOM.querySelector('.dropdown').classList.remove('active');
+}
+
 function initFBMusume()
 {
 	var setting_promise = new Promise(function(resolve, reject) {
@@ -98,17 +106,35 @@ function initFBMusume()
 		var div = document.createElement("div");
 		div.innerHTML = fbm_template;
 		fbm_top_DOM = div.firstChild;
-		fbm_top_DOM.appendChild(character.elem);
+
+		fbm_top_DOM.insertBefore(character.elem, fbm_top_DOM.firstChild); // prepend
 		document.querySelector("body").appendChild(fbm_top_DOM);
+		var dropdown_menu = fbm_top_DOM.querySelector('.dropdown .menu');
+		var dropdown_button = fbm_top_DOM.querySelector('.dropdown .button');
+		var createDropdown = function(text, func) {
+			var li = document.createElement("li");
+			li.innerText = text;
+			li.addEventListener("click", func);
+			dropdown_menu.appendChild(li);
+		}
+		createDropdown(i18n.t("setting"), function() {
+			window.open(chrome.extension.getURL('src/settings.html'));
+		});
+		createDropdown(i18n.t("reload"), reloadFBMusume);
+
 		var body_observer = createBodyObserver();
 		body_observer.observe(document.querySelector("body"), {
 			childList: true, subtree: true
 		});
+		fbm_top_DOM.addEventListener('mouseleave', dropdownOff);
+		dropdown_button.addEventListener('click', dropdownToggle);
 	}).catch(function(e) { console.error(e.stack); });
 }
 
-function destroyFBMusume()
+function reloadFBMusume()
 {
+	// TODO: reset everything
+	character.destroy();
 }
 
 initFBMusume();

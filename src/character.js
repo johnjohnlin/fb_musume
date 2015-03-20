@@ -7,7 +7,6 @@ Array.prototype.randomSelect = function() {
 
 function msToNextHour() {
 	var now = new Date();
-	// return 5000 + 5000*Math.random();
 	return 3601000 - (now.getMinutes()*60 + now.getSeconds())*1000;
 }
 
@@ -86,33 +85,11 @@ Character.prototype.createElement = function() {
 		});
 	}
 
-	/*
-	// Create dropdown DOMs
-	var dropdown_menu = div.querySelector('.dropdown .menu');
-	var createDropdown = function(text, func) {
-		var li = document.createElement("li");
-		li.innerText = text;
-		li.addEventListener("click", func);
-		dropdown_menu.appendChild(li);
-	}
-
-	// this two event handlers do not bind with 'this', without removing them is ok.
-	createDropdown(i18n.t("setting"), function() {
-		window.open(chrome.extension.getURL('src/settings.html'));
-	});
-	createDropdown(i18n.t("reload"), function() {
-		alert(i18n.t("reload"));
-	});
-	*/
-
 	// Register events
 	var character = div.querySelector('.canvas');
-	// var dropdown_button = div.querySelector('.dropdown .button');
 	character.addEventListener('click', this.onClick);
-	div.addEventListener('mouseleave', this.onMouseleave);
 	div.addEventListener('message', this.onMessage);
 	div.addEventListener('club_notify', this.onClubNotify);
-	// dropdown_button.addEventListener('click', this.onDropdownToggle);
 	return div;
 }
 
@@ -124,10 +101,8 @@ Character.prototype.destroy = function() {
 	var character = div.querySelector('.canvas');
 	// var dropdown_button = div.querySelector('.dropdown .button');
 	character.removeEventListener('click', this.onClick);
-	div.removeEventListener('mouseleave', this.onMouseleave);
 	div.removeEventListener('message', this.onMessage);
 	div.removeEventListener('club_notify', this.onClubNotify);
-	// dropdown_button.removeEventListener('click', this.onDropdownToggle);
 	this.elem.remove();
 	// prevent circular reference
 	Object.keys(this).forEach(function(key) {
@@ -271,14 +246,6 @@ Character.prototype.onMessage = function(event) {
 Character.prototype.onClubNotify = function(event) {
 	this.onMessage();
 }
-
-// Character.prototype.onDropdownToggle = function(event) {
-// 	this.elem.querySelector('.dropdown').classList.toggle('active');
-// }
-//
-// Character.prototype.onMouseleave = function(event) {
-// 	this.elem.querySelector('.dropdown').classList.remove('active');
-// }
 
 window.Character = Character;
 
