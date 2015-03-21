@@ -61,7 +61,7 @@ FBMusume.prototype.createBodyObserver = function() {
 		}
 		tag.dataset.fbm = true;
 		tag.addEventListener('play', this.onFacebookAudioPlay);
-	}
+	}.bind(this);
 	// query one first
 	Array.prototype.forEach.call(document.querySelectorAll('body>audio'), bind_func);
 	return new MutationObserver(function(mutations) {
