@@ -25,7 +25,6 @@ FBMusume.prototype.initEventFunctions = function() {
 	Object.keys(FBMusume.prototype).filter(function(key) {
 		return /^on.*/.test(key);
 	}).forEach(function(key) {
-		console.log(key);
 		this[key] = this[key].bind(this);
 	}, this);
 }
@@ -47,7 +46,7 @@ FBMusume.prototype.createElement = function() {
 	createDropdown(i18n.t("setting"), function() {
 		window.open(chrome.extension.getURL('src/settings.html'));
 	});
-	createDropdown(i18n.t("reload"), reloadFBMusume);
+	createDropdown(i18n.t("reload"), FBMusume.reload);
 	div.addEventListener('mouseleave', this.onDropdownOff);
 	dropdown_button.addEventListener('click', this.onDropdownToggle);
 
@@ -74,9 +73,6 @@ FBMusume.prototype.createBodyObserver = function() {
 /* members */
 FBMusume.prototype.loadCharacter = function(character_name) {
 	character_name = character_name || this.user_config.character;
-	if (character_name === 'none') {
-		return;
-	}
 	if (this.character) {
 		this.character.destroy();
 		this.character = null;
@@ -88,7 +84,7 @@ FBMusume.prototype.loadCharacter = function(character_name) {
 }
 
 FBMusume.prototype.translateCharacter = function(character_config) {
-	character_config.name = i18n.t(character_config.name, {}, character_config.translate);
+	character_config.name_translated = i18n.t(character_config.name, {}, character_config.translate);
 	for (script_name in character_config.scripts) {
 		var words = character_config.scripts[script_name].words;
 		words.forEach(function(word) {
@@ -102,6 +98,15 @@ FBMusume.prototype.startOccupyYourFacebook_YAY = function() {
 	this.body_observer.observe(document.querySelector("body"), {
 		childList: true, subtree: true
 	});
+}
+
+FBMusume.prototype.destroy = function() {
+	this.elem.remove();
+	this.body_observer.disconnect();
+	Array.prototype.forEach.call(document.querySelectorAll('body>audio'), function(dom) {
+		delete dom.dataset.fbm;
+		dom.remove("play", this.onFacebookAudioPlay);
+	}.bind(this));
 }
 
 /* events */
@@ -158,6 +163,9 @@ FBMusume.init = function() {
 	.then(FBMusume.initUserSettings)
 	.then(FBMusume.initI18n)
 	.then(function(user_config) {
+		if (user_config.character === 'none') {
+			return;
+		}
 		window.fb_musume = new FBMusume(user_config);
 		fb_musume.loadCharacter();
 		fb_musume.startOccupyYourFacebook_YAY();
@@ -165,11 +173,9 @@ FBMusume.init = function() {
 	.catch(function(e) { console.error(e.stack); });
 }
 
-// TODO: move it
-function reloadFBMusume()
-{
-	// TODO: reset everything
-	character.destroy();
+FBMusume.reload = function() {
+	fb_musume.destroy();
+	FBMusume.init();
 }
 
 FBMusume.init();

@@ -52,13 +52,14 @@ Character.prototype.initEventFunctions = function() {
 
 Character.prototype.parseConfig = function(config) {
 	this.config = config;
+	// TODO: move path translation to fb_musume.js?
 	for (var state_name in this.config.animations) {
 		this.config.animations[state_name].forEach(function(frame) {
-			frame.path = chrome.extension.getURL("assets/" + frame.path);
+			frame.full_path = chrome.extension.getURL("assets/" + frame.path);
 		});
 	}
 
-	this.config.voice = this.config.voice.map(function(voice_path) {
+	this.config.full_voice = this.config.voice.map(function(voice_path) {
 		return chrome.extension.getURL("assets/" + voice_path);
 	});
 }
@@ -77,7 +78,7 @@ Character.prototype.createElement = function() {
 	// Create voice DOMs
 	if (this.user_config.enable_voice) {
 		var voice_set = div.querySelector('.voice-set');
-		this.config.voice.forEach(function(voice_path) {
+		this.config.full_voice.forEach(function(voice_path) {
 			var audio = document.createElement('audio');
 			audio.src = voice_path;
 			audio.dataset.fbm = true;
@@ -168,7 +169,7 @@ Character.prototype.start_animation = function(animation_name) {
 
 	var animation_tick_func = function() {
 		var frame = animation[frame_idx];
-		character.src = frame.path;
+		character.src = frame.full_path;
 		frame_idx = (frame_idx + 1) % animation.length;
 		if (frame.duration > 0) {
 			this.next_animation = setTimeout(animation_tick_func, frame.duration);
