@@ -46,7 +46,10 @@ FBMusume.prototype.createElement = function() {
 	createDropdown(i18n.t("setting"), function() {
 		window.open(chrome.extension.getURL('src/settings.html'));
 	});
-	createDropdown(i18n.t("reload"), FBMusume.reload);
+	createDropdown(i18n.t("reload"), function() {
+		// reduce FBMusume.reload reference
+		FBMusume.reload();
+	});
 	div.addEventListener('mouseleave', this.onDropdownOff);
 	dropdown_button.addEventListener('click', this.onDropdownToggle);
 
@@ -101,12 +104,25 @@ FBMusume.prototype.startOccupyYourFacebook_YAY = function() {
 }
 
 FBMusume.prototype.destroy = function() {
-	this.elem.remove();
+	if (this.character) {
+		this.character.destroy();
+		this.character = null;
+	}
 	this.body_observer.disconnect();
 	Array.prototype.forEach.call(document.querySelectorAll('body>audio'), function(dom) {
-		delete dom.dataset.fbm;
+		dom.dataset.fbm = null;
 		dom.remove("play", this.onFacebookAudioPlay);
 	}.bind(this));
+
+	var div = this.elem;
+	var dropdown_menu = div.querySelector('.dropdown .menu');
+	var dropdown_button = div.querySelector('.dropdown .button');
+	div.removeEventListener('mouseleave', this.onDropdownOff);
+	dropdown_button.removeEventListener('click', this.onDropdownToggle);
+	this.elem.remove();
+	Object.keys(this).forEach(function(key) {
+		this[key] = null;
+	});
 }
 
 /* events */
@@ -174,7 +190,11 @@ FBMusume.init = function() {
 }
 
 FBMusume.reload = function() {
-	fb_musume.destroy();
+	if (window.fb_musume) {
+		window.fb_musume.destroy();
+		window.fb_musume = null;
+	}
+	// FIXME: should we reload i18n & user setting?
 	FBMusume.init();
 }
 

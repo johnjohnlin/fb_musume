@@ -100,7 +100,6 @@ Character.prototype.destroy = function() {
 	this.stop_animation();
 	var div = this.elem
 	var character = div.querySelector('.canvas');
-	// var dropdown_button = div.querySelector('.dropdown .button');
 	character.removeEventListener('click', this.onClick);
 	div.removeEventListener('message', this.onMessage);
 	div.removeEventListener('club_notify', this.onClubNotify);
