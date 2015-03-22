@@ -122,9 +122,9 @@
 		"ja_JP": "あなたがここにいると、なんだかさびしくなくなりますね。"
 	},
 	"msg_idle_004": {
-		"en_US": "Recommended book? How about this “Ruby on rail tutorial”?",
-		"zh_TW": "推薦的書？那個，這本「Ruby on Rails 教學」如何啊？",
-		"ja_JP": "おすすめの本って？あの...、この「Ruby on Rails チュートリアル」はどう思います？"
+		"en_US": "Recommended book? How about \"Ruby on rail tutorial\"?",
+		"zh_TW": "推薦的書？那個，「Ruby on Rails 教學」如何啊？",
+		"ja_JP": "おすすめの本って？あの...「Ruby on Rails チュートリアル」はどう思います？"
 	},
 	"msg_idle_005": {
 		"en_US": "Night is slient, I, like it.",
@@ -154,12 +154,12 @@
 	"msg_idle_010": {
 		"en_US": "It’s about to the new year, how did you do this year?",
 		"zh_TW": "快過年了，你今年過得如何呢？",
-		"ja_JP": "良いお年を、あなたはどんな今年を過ごしましたか？"
+		"ja_JP": "良いお年を。あなたはこの一年をどう過ごしていましたか？"
 	},
 	"msg_idle_011": {
 		"en_US": "Happy new year! For not regret, just work hard this year!",
 		"zh_TW": "新年快樂！為了不要後悔，今年也認真努力吧！",
-		"ja_JP": "あけましておめでとうございます！悔しくないように、今年も一年頑張ります！"
+		"ja_JP": "あけましておめでとうございます！悔しくならないように、今年もお互い頑張りましょう！"
 	},
 	"msg_idle_012": {
 		"en_US": "On Valentine’s day, I feel that I am dipped in special atmosphere.",
