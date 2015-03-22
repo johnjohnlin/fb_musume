@@ -109,7 +109,7 @@
 	"msg_idle_001": {
 		"en_US": "This book is interesting. Do you want to read as well?",
 		"zh_TW": "這次的書蠻有趣的，你要不要也讀一下？",
-		"ja_JP": "今度の本は面白いです、あなたも読んでみませんか？"
+		"ja_JP": "この本は面白いですから、あなたも読んでみませんか？"
 	},
 	"msg_idle_002": {
 		"en_US": "I have been reading book by myself, so I have few friends.",
