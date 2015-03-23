@@ -9,7 +9,7 @@ var CharacterPool = function(callback) {
 	}, this);
 	Promise
 		.all(load_promises)
-		.then(callback.call(this))
+		.then(callback.bind(this))
 		.catch(function(e) { console.error(e.stack); });
 }
 
@@ -43,7 +43,7 @@ CharacterPool.prototype.onCharacterLoad = function(event, dir) {
 }
 
 CharacterPool.prototype.getCharacterConfig = function(key) {
-	return this.pool[key];
+	return this.pool[key] || {};
 }
 
 CharacterPool.paths = [

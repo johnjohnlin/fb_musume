@@ -4,6 +4,7 @@
 	"version": "0.9.1",
 	"name": "__MSG_ext_name__",
 	"description": "__MSG_ext_description__",
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"content_scripts": [
 		{
 			"matches":["https://*.facebook.com/*","http://*.facebook.com/*"],

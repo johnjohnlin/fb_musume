@@ -30,7 +30,8 @@ function save()
 
 function initCharacters()
 {
-	var keys = Object.keys(characters);
+	// FIXME
+	var keys = CharacterPool.paths;
 	var select = document.getElementById('character');
 
 	var addOption = function(value, string, filename) {
@@ -43,9 +44,10 @@ function initCharacters()
 	};
 
 	addOption("none", "none");
-	for (var key in characters) {
-		addOption(key, characters[key].name, characters[key].translate);
-	}
+	keys.forEach(function(key) {
+		var config = character_pool.getCharacterConfig(key);
+		addOption(key, config.name, config.translate);
+	});
 }
 
 function initDOMi18n()
@@ -72,18 +74,22 @@ function load()
 		chrome.storage.sync.get({
 			enable_voice: true,
 			refresh_time: 30,
-			character: Object.keys(characters)[0],
+			// FIXME:
+			character: CharacterPool.paths[0],
 			language: "ja_JP"
 		}, function(items) { resolve(items); });
 	}).then(function(items) {
 		return new Promise(function(resolve, reject) {
-			var characterTranslateFiles = Object.keys(characters).map(function (key) {
-				return characters[key].translate;
-			});
 			I18n.init({
 				locale: items.language,
-				translateFiles: ['settings'].concat(characterTranslateFiles)
+				translateFiles: ['settings']
 			}, function() { resolve(items); });
+		});
+	}).then(function(items) {
+		return new Promise(function(resolve, reject) {
+			CharacterPool.init(function() {
+				resolve(items);
+			});
 		});
 	}).then(function(items) {
 		initCharacters();

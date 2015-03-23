@@ -1,6 +1,8 @@
 /*
 JSON format
 
+should return var config = {
+
 characters 1 - many character (with key = its name) (fix to human readable later)
 
 character 1 - 1 name (name, shown in setting pages)
