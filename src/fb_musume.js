@@ -80,7 +80,7 @@ FBMusume.prototype.loadCharacter = function(character_name) {
 		this.character.destroy();
 		this.character = null;
 	}
-	var character_config = characters[character_name];
+	var character_config = character_pool.getCharacterConfig(character_name);
 	this.translateCharacter(character_config);
 	this.character = new Character(character_config, this.user_config);
 	this.elem.querySelector('.character-area').appendChild(this.character.elem);
@@ -155,22 +155,28 @@ FBMusume.initUserSettings = function() {
 		chrome.storage.sync.get({
 			enable_voice: true,
 			refresh_time: 30,
-			character: Object.keys(characters)[0],
+			// FIXME
+			character: CharacterPool.paths[0],
 			language: "ja_JP"
 		}, function(user_config) { resolve(user_config); });
 	});
 }
 
 FBMusume.initI18n = function(user_config) {
-	var characterTranslateFiles = Object.keys(characters).map(function (key) {
-		return characters[key].translate;
-	});
 	return new Promise(function(resolve, reject) {
 		I18n.init({
 			locale: user_config.language,
-			translateFiles: ["fb_musume"].concat(characterTranslateFiles)
+			translateFiles: ["fb_musume"]
 		},
 		function() { resolve(user_config); });
+	});
+}
+
+FBMusume.initCharacterPool = function(user_config) {
+	return new Promise(function(resolve, reject) {
+		CharacterPool.init(function() {
+			resolve(user_config);
+		});
 	});
 }
 
@@ -178,6 +184,7 @@ FBMusume.init = function() {
 	Promise.resolve()
 	.then(FBMusume.initUserSettings)
 	.then(FBMusume.initI18n)
+	.then(FBMusume.initCharacterPool)
 	.then(function(user_config) {
 		if (user_config.character === 'none') {
 			return;

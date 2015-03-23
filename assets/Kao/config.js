@@ -20,11 +20,10 @@ frame set 1 - many {image path + duration}
 voice 1 - many voice path (list)
 
 */
-
-var characters = {
-	kao: {
+// FIXME: assets path
+var config = {
 		translate: "character0",
-		name: "name",
+		name: "kao",
 		scripts: {
 			// Idle scripts
 			idle: {
@@ -213,4 +212,4 @@ var characters = {
 			"Atago/nc88878.mp3"
 		]
 	}
-}
+

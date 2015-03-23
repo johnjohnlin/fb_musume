@@ -24,14 +24,14 @@ I18n.init = function(settings, callback) {
 
 I18n.prototype.localePath = 'src/i18n/';
 
-I18n.prototype.loadStrings = function(filename, callback) {
+I18n.prototype.loadStringsFullpath = function(path, callback) {
 	callback = callback || function(){};
+	var filename = path.split('/').pop().split('.')[0];
 	if (this.strings[filename]) {
 		callback.call(this);
 		return;
 	}
-	var path = chrome.extension.getURL(
-		[this.localePath, filename, ".json"].join(''));
+	var path = chrome.extension.getURL(path);
 	var xhr = new XMLHttpRequest();
 	xhr.addEventListener('load', function(event) {
 		this.onStringsLoad(event, filename);
@@ -39,6 +39,11 @@ I18n.prototype.loadStrings = function(filename, callback) {
 	}.bind(this));
 	xhr.open("GET", path, true);
 	xhr.send();
+}
+
+I18n.prototype.loadStrings = function(filename, callback) {
+	var path = [this.localePath, filename, ".json"].join('');
+	this.loadStringsFullpath(path, callback);
 }
 
 I18n.prototype.onStringsLoad = function(event, filename) {
