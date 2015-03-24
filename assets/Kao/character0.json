@@ -2,169 +2,212 @@
 	"msg_click_000": {
 		"en_US": "Where do you want to touch?",
 		"zh_TW": "你要摸哪裡？",
-		"ja_JP": "どこを触るつもりです？"
+		"ja_JP": "どこを触るつもりです？",
+		"voice": "audio/07.ogg"
 	},
 	"msg_click_001": {
 		"en_US": "!!!",
 		"zh_TW": "（嚇我一跳）",
-		"ja_JP": "（ビクリした）"
+		"ja_JP": "（ビクリした）",
+		"voice": "audio/04.ogg"
 	},
 	"msg_click_002": {
 		"en_US": "?!",
 		"zh_TW": "欸！",
-		"ja_JP": "ええっ？"
+		"ja_JP": "ええっ？",
+		"voice": "audio/06.ogg"
 	},
 	"msg_click_003": {
 		"en_US": "The glasses will be broken, please stop.",
 		"zh_TW": "眼鏡會壞的，請不要這樣。",
-		"ja_JP": "メガネが壊れるから、やめてよ。"
+		"ja_JP": "メガネが壊れるから、やめてよ。",
+		"voice": "audio/14.ogg"
 	},
 	"msg_click_004": {
 		"en_US": "Do not touch there...",
 		"zh_TW": "那裡有點...",
-		"ja_JP": "そこはちょっと..."
+		"ja_JP": "そこはちょっと...",
+		"voice": "audio/01.ogg"
 	},
 	"msg_click_005": {
 		"en_US": "I am reading books, please wait for a while.",
 		"zh_TW": "我正在看書，稍等一下吧。",
-		"ja_JP": "本を読んでいる最中だから、少しだけ待ちなさい。"
+		"ja_JP": "本を読んでいる最中だから、少しだけ待ちなさい。",
+		"voice": "audio/19.ogg"
 	},
 	"msg_hour_00": {
-		"en_US": "(00:00)"
+		"en_US": "(00:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_01": {
-		"en_US": "(01:00)"
+		"en_US": "(01:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_02": {
-		"en_US": "(02:00)"
+		"en_US": "(02:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_03": {
-		"en_US": "(03:00)"
+		"en_US": "(03:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_04": {
-		"en_US": "(04:00)"
+		"en_US": "(04:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_05": {
-		"en_US": "(05:00)"
+		"en_US": "(05:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_06": {
-		"en_US": "(06:00)"
+		"en_US": "(06:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_07": {
-		"en_US": "(07:00)"
+		"en_US": "(07:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_08": {
-		"en_US": "(08:00)"
+		"en_US": "(08:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_09": {
-		"en_US": "(09:00)"
+		"en_US": "(09:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_10": {
-		"en_US": "(10:00)"
+		"en_US": "(10:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_11": {
-		"en_US": "(11:00)"
+		"en_US": "(11:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_12": {
-		"en_US": "(12:00)"
+		"en_US": "(12:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_13": {
-		"en_US": "(13:00)"
+		"en_US": "(13:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_14": {
-		"en_US": "(14:00)"
+		"en_US": "(14:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_15": {
-		"en_US": "(15:00)"
+		"en_US": "(15:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_16": {
-		"en_US": "(16:00)"
+		"en_US": "(16:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_17": {
-		"en_US": "(17:00)"
+		"en_US": "(17:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_18": {
-		"en_US": "(18:00)"
+		"en_US": "(18:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_19": {
-		"en_US": "(19:00)"
+		"en_US": "(19:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_20": {
-		"en_US": "(20:00)"
+		"en_US": "(20:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_21": {
-		"en_US": "(21:00)"
+		"en_US": "(21:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_22": {
-		"en_US": "(22:00)"
+		"en_US": "(22:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_hour_23": {
-		"en_US": "(23:00)"
+		"en_US": "(23:00)",
+		"voice": "audio/25.ogg"
 	},
 	"msg_idle_000": {
 		"en_US": "Hu, seems that I have read too much, please let me sleep for a while.",
 		"zh_TW": "呼，好像看太多書了，稍微睡一下吧。",
-		"ja_JP": "ふー、本を読み過ぎで、ちょっと寝よう。"
+		"ja_JP": "ふー、本を読み過ぎで、ちょっと寝よう。",
+		"voice": "audio/10.ogg"
 	},
 	"msg_idle_001": {
 		"en_US": "This book is interesting. Do you want to read as well?",
 		"zh_TW": "這次的書蠻有趣的，你要不要也讀一下？",
-		"ja_JP": "この本は面白いから、あなたも読んでみませんか？"
+		"ja_JP": "この本は面白いから、あなたも読んでみませんか？",
+		"voice": "audio/00.ogg"
 	},
 	"msg_idle_002": {
 		"en_US": "I have been reading book by myself, so I have few friends.",
 		"zh_TW": "一直以來都一個人看書，所以朋友有點少。",
-		"ja_JP": "いつも一人でほんをよむから、友達があまりいません。"
+		"ja_JP": "いつも一人でほんをよむから、友達があまりいません。",
+		"voice": "audio/13.ogg"
 	},
 	"msg_idle_003": {
 		"en_US": "As long as you are here, I somewhat become not that lonely.",
 		"zh_TW": "有你在這裡的話，總覺得好像沒那麼寂寞了。",
-		"ja_JP": "あなたがここにいると、なんだかさびしくなくなりますね。"
+		"ja_JP": "あなたがここにいると、なんだかさびしくなくなりますね。",
+		"voice": "audio/18.ogg"
 	},
 	"msg_idle_004": {
 		"en_US": "Recommended book? How about \"Ruby on rail tutorial\"?",
 		"zh_TW": "推薦的書？那個，「Ruby on Rails 教學」如何啊？",
-		"ja_JP": "おすすめの本って？あの...「Ruby on Rails チュートリアル」はどう思います？"
+		"ja_JP": "おすすめの本って？あの...「Ruby on Rails チュートリアル」はどう思います？",
+		"voice": "audio/22.ogg"
 	},
 	"msg_idle_005": {
 		"en_US": "Night is slient, I, like it.",
 		"zh_TW": "夜晚很安靜，我，很喜歡。",
-		"ja_JP": "夜が静かなので、わたし、好き。"
+		"ja_JP": "夜が静かなので、わたし、好き。",
+		"voice": "audio/16.ogg"
 	},
 	"msg_idle_006": {
 		"en_US": "Because of the sandstorm, let’s read book in library.",
 		"zh_TW": "因為沙塵暴，在圖書館看書吧！",
-		"ja_JP": "かふんしょうのせいで、図書館で本を読もう！"
+		"ja_JP": "かふんしょうのせいで、図書館で本を読もう！",
+		"voice": "audio/15.ogg"
 	},
 	"msg_idle_007": {
 		"en_US": "It’s hot outside, so let’s read book at bookstore.",
 		"zh_TW": "外面好熱，在書局看書吧！",
-		"ja_JP": "外が暑いから、本屋で本を読もう！"
+		"ja_JP": "外が暑いから、本屋で本を読もう！",
+		"voice": "audio/09.ogg"
 	},
 	"msg_idle_008": {
 		"en_US": "Autumn of reading, let’s go buying new books!",
 		"zh_TW": "讀書之秋，一起去買新書吧！",
-		"ja_JP": "読書の秋なので、一緒に新しい本を買いましょう！"
+		"ja_JP": "読書の秋なので、一緒に新しい本を買いましょう！",
+		"voice": "audio/17.ogg"
 	},
 	"msg_idle_009": {
 		"en_US": "It’s cold outside, so let’s read book at home!",
 		"zh_TW": "好冷，在家裡看書吧！",
-		"ja_JP": "さむいから、家で本を読もう！"
+		"ja_JP": "さむいから、家で本を読もう！",
+		"voice": "audio/08.ogg"
 	},
 	"msg_idle_010": {
 		"en_US": "It’s about to the new year, how did you do this year?",
 		"zh_TW": "快過年了，你今年過得如何呢？",
-		"ja_JP": "良いお年を。あなたはこの一年をどう過ごしていましたか？"
+		"ja_JP": "良いお年を。あなたはこの一年をどう過ごしていましたか？",
+		"voice": "audio/12.ogg"
 	},
 	"msg_idle_011": {
 		"en_US": "Happy new year! For not regret, just work hard this year!",
 		"zh_TW": "新年快樂！為了不要後悔，今年也認真努力吧！",
-		"ja_JP": "あけましておめでとうございます！悔しくならないように、今年もお互い頑張りましょう！"
+		"ja_JP": "あけましておめでとうございます！悔しくならないように、今年もお互い頑張りましょう！",
+		"voice": "audio/12.ogg"
 	},
 	"msg_idle_012": {
 		"en_US": "On Valentine’s day, I feel that I am dipped in special atmosphere.",
 		"zh_TW": "情人節感覺讓人沉浸在特別的氣氛呢。",
-		"ja_JP": "バレンタインデーに、恋人とフェイスブックを読んで、特別な気分に浸れて私は好きです"
+		"ja_JP": "バレンタインデーに、恋人とフェイスブックを読んで、特別な気分に浸れて私は好きです",
+		"voice": "audio/24.ogg"
 	},
 	"msg_idle_013": {
 		"en_US": "April Fool..., I am fooled by everyone every year.",
@@ -179,17 +222,20 @@
 	"msg_idle_015": {
 		"en_US": "Sentence of Halloween? Uh... face or book?",
 		"zh_TW": "萬聖節台詞的話，那個...，face or book 這樣嗎？",
-		"ja_JP": "ハロウィンのセリフって、あの...、フェス or ブックですか？"
+		"ja_JP": "ハロウィンのセリフって、あの...、フェス or ブックですか？",
+		"voice": "audio/20.ogg"
 	},
 	"msg_idle_016": {
 		"en_US": "I prepared “Go Programming” as the present in the party, but everybody’s face became subtle, that’s strange.",
 		"zh_TW": "今天的聖誕派對，我準備了「Go Programming」的書當禮物，大家都露出微妙的表情，真是奇怪。",
-		"ja_JP": "今日のパーティーで、「Go Programming」の本のプレセントをよういしたのに、みんなが微妙な顔をしました。おかしいです。"
+		"ja_JP": "今日のパーティーで、「Go Programming」の本のプレセントをよういしたのに、みんなが微妙な顔をしました。おかしいです。",
+		"voice": "audio/26.ogg"
 	},
 	"msg_idle_017": {
 		"en_US": "It’s weekend, are you going to travel to anywhere?",
 		"zh_TW": "週末啊，有預計去哪裡玩嗎？",
-		"ja_JP": "週末か...どこかへ遊びに行くつもりですか？"
+		"ja_JP": "週末か...どこかへ遊びに行くつもりですか？",
+		"voice": "audio/11.ogg"
 	},
 	"msg_onmsg_000": {
 		"en_US": "(Why do I have to do this...)",
@@ -204,7 +250,8 @@
 	"msg_onnotify_000": {
 		"en_US": "Ne...new notification.",
 		"zh_TW": "新...新的消息喔。",
-		"ja_JP": "あ...あたらしい情報です。"
+		"ja_JP": "あ...あたらしい情報です。",
+		"voice": "audio/03.ogg"
 	},
 	"msg_onnotify_001": {
 		"en_US": "Notification from friends, so envious of you...",
