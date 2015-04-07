@@ -167,31 +167,31 @@ var config = {
 	animations: {
 		idle: [
 			{
-				path: "Umi/1.png",
+				path: "images/Umi/1.png",
 				duration: 5000
 			},
 			{
-				path: "Umi/3.png",
+				path: "images/Umi/3.png",
 				duration: 500
 			},
 			{
-				path: "Umi/2.png",
+				path: "images/Umi/2.png",
 				duration: 5000
 			},
 			{
-				path: "Umi/3.png",
+				path: "images/Umi/3.png",
 				duration: 500
 			}
 		],
 		click: [
 			{
-				path: "Umi/3.png",
+				path: "images/Umi/3.png",
 				duration: -1
 			}
 		],
 		atago: [
 			{
-				path: "Atago/pannpakapann.jpg",
+				path: "images/Atago/pannpakapann.jpg",
 				duration: -1
 			}
 		]

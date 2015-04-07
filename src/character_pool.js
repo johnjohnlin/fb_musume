@@ -15,7 +15,7 @@ var CharacterPool = function(callback) {
 
 CharacterPool.prototype.loadCharacter = function(dir, callback) {
 	callback = callback || function(){};
-	var path = chrome.extension.getURL(["assets/", dir, "/config.js"].join(''));
+	var path = chrome.extension.getURL(["assets", dir, "config.js"].join('/'));
 	var load_promise = new Promise(function(resolve, reject) {
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('load', function(event) {
@@ -38,6 +38,12 @@ CharacterPool.prototype.loadCharacter = function(dir, callback) {
 CharacterPool.prototype.onCharacterLoad = function(event, dir) {
 	// TODO: error handling
 	eval(event.target.responseText);
+	Object.keys(config.animations).forEach(function(key) {
+		var frames = config.animations[key];
+		frames.forEach(function(frame) {
+			frame.path = chrome.extension.getURL(["assets", dir, frame.path].join('/'));
+		});
+	});
 	this.pool[dir] = config;
 	return config;
 }

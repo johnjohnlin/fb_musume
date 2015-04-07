@@ -56,7 +56,7 @@ I18n.prototype.onStringsLoad = function(event, filename, path) {
 	Object.keys(this.strings[filename]).forEach(function(key) {
 		var v = this.strings[filename][key].voice;
 		if (v) {
-			this.strings[filename][key].voice = [dir, v].join('/');
+			this.strings[filename][key].voice = chrome.extension.getURL([dir, v].join('/'));
 		}
 	}, this);
 }
