@@ -36,8 +36,7 @@ Character.prototype.template = [
 		'<img class="canvas">',
 		'<div class="msg-box">',
 		'</div>',
-		'<div class="voice-set">',
-		'</div>',
+		'<audio class="voice" data-fbm=true ></audio>',
 	'</div>'
 ].join("");
 
@@ -58,10 +57,6 @@ Character.prototype.parseConfig = function(config) {
 			frame.full_path = chrome.extension.getURL("assets/" + frame.path);
 		});
 	}
-
-	this.config.full_voice = this.config.voice.map(function(voice_path) {
-		return chrome.extension.getURL("assets/" + voice_path);
-	});
 }
 
 Character.prototype.parseUserConfig = function(user_config) {
@@ -74,17 +69,6 @@ Character.prototype.createElement = function() {
 	var div = document.createElement('div');
 	div.innerHTML = this.template;
 	div = div.firstChild;
-
-	// Create voice DOMs
-	if (this.user_config.enable_voice) {
-		var voice_set = div.querySelector('.voice-set');
-		this.config.full_voice.forEach(function(voice_path) {
-			var audio = document.createElement('audio');
-			audio.src = voice_path;
-			audio.dataset.fbm = true;
-			voice_set.appendChild(audio);
-		});
-	}
 
 	// Register events
 	var character = div.querySelector('.canvas');
@@ -184,7 +168,7 @@ Character.prototype.stop_animation = function() {
 	this.next_animation = null;
 }
 
-Character.prototype.say = function(word, voice_id) {
+Character.prototype.say = function(word, voice_src) {
 	var msgBox = this.elem.querySelector('.msg-box');
 	msgBox.classList.remove('show');
 	// force to reset classList
@@ -192,14 +176,13 @@ Character.prototype.say = function(word, voice_id) {
 	msgBox.innerText = word;
 	msgBox.classList.add('show');
 
-	if (this.user_config.enable_voice && voice_id !== undefined) {
-		var voice_set = this.elem.querySelectorAll('.voice-set audio');
-		if (this.current_voice) {
-			this.current_voice.pause();
+	if (this.user_config.enable_voice && voice_src !== undefined) {
+		var voice = this.elem.querySelector('.voice');
+		if (!voice.paused) {
+			voice.pause();
 		}
-		this.current_voice = voice_set[voice_id];
-		this.current_voice.currentTime = 0;
-		this.current_voice.play();
+		voice.src = chrome.extension.getURL(voice_src);
+		voice.play();
 	}
 }
 

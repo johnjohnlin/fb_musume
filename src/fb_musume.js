@@ -92,6 +92,7 @@ FBMusume.prototype.translateCharacter = function(character_config) {
 		var words = character_config.scripts[script_name].words;
 		words.forEach(function(word) {
 			word.word_translated = i18n.t(word.word, {}, character_config.translate);
+			word.voice = i18n.v(word.word, character_config.translate);
 		});
 	}
 }
